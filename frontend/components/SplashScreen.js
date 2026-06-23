@@ -12,16 +12,16 @@ export default function SplashScreen() {
     if (!hasSeenSplash) {
       setVisible(true);
       
-      // Start fade out after 4 seconds
+      // Start fade out after 2.5 seconds
       const fadeTimeout = setTimeout(() => {
         setFade(true);
-      }, 4000);
+      }, 2500);
 
-      // Hide completely after 4.5 seconds (fade animation completes)
+      // Hide completely after 3 seconds (fade animation completes)
       const hideTimeout = setTimeout(() => {
         setVisible(false);
         sessionStorage.setItem('charithra_silks_splash_seen', 'true');
-      }, 4500);
+      }, 3000);
 
       return () => {
         clearTimeout(fadeTimeout);
@@ -61,10 +61,10 @@ export default function SplashScreen() {
           }
         }
         .animate-logo-zoom {
-          animation: custom-zoom-in 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          animation: custom-zoom-in 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .animate-text-reveal {
-          animation: text-fade-in 2.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+          animation: text-fade-in 2.0s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
           opacity: 0;
         }
       `}</style>
