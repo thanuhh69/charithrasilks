@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Local Environment Credentials (must never be committed)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+firebase-service-account.json
+
+# System Files
+.DS_Store
+Thumbs.db
