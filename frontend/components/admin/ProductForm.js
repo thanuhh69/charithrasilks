@@ -22,6 +22,7 @@ export default function ProductForm({ initialData = null, productId = null }) {
 
   const [form, setForm] = useState({
     title: '',
+    productCode: '',
     description: '',
     category: '',
     fabric: '',
@@ -45,6 +46,7 @@ export default function ProductForm({ initialData = null, productId = null }) {
     if (initialData) {
       setForm({
         title: initialData.title || '',
+        productCode: initialData.productCode || '',
         description: initialData.description || '',
         category: initialData.category?._id || initialData.category || '',
         fabric: initialData.fabric || '',
@@ -160,8 +162,18 @@ export default function ProductForm({ initialData = null, productId = null }) {
     <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
       <div className="card p-5 space-y-4">
         <h2 className="text-cream font-medium">Basic Details</h2>
-        <input required placeholder="Product Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="input-field" />
-        <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="input-field" rows={3} />
+        <div className="space-y-1">
+          <label className="text-xs text-cream/70 font-medium">Product Title *</label>
+          <input required placeholder="Product Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="input-field" />
+        </div>
+        <div className="space-y-1">
+          <label className="text-xs text-cream/70 font-medium">Product Code / SKU *</label>
+          <input required placeholder="Enter unique product code (e.g. CS001, CHS-0001)" value={form.productCode} onChange={(e) => setForm({ ...form, productCode: e.target.value })} className="input-field" />
+        </div>
+        <div className="space-y-1">
+          <label className="text-xs text-cream/70 font-medium">Description</label>
+          <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="input-field" rows={3} />
+        </div>
         <div className="grid grid-cols-2 gap-4">
           <select required value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="input-field">
             <option value="">Select Category</option>

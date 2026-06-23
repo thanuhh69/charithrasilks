@@ -32,6 +32,21 @@ const getProducts = async (req, res) => {
       if (cat) query.category = cat._id;
     }
     if (search) {
+      // Check for exact match on productCode
+      const trimmedSearch = search.trim();
+      const exactProduct = await Product.findOne({ 
+        productCode: { $regex: new RegExp(`^${trimmedSearch}$`, 'i') },
+        isActive: true 
+      });
+      if (exactProduct) {
+        return res.json({
+          success: true,
+          exactMatchProductSlug: exactProduct.slug,
+          products: [exactProduct],
+          pagination: { total: 1, page: 1, pages: 1, limit: 12 }
+        });
+      }
+
       const matchingCategories = await Category.find({ name: { $regex: search, $options: 'i' } });
       const catIds = matchingCategories.map((c) => c._id);
       query.$or = [
@@ -39,6 +54,7 @@ const getProducts = async (req, res) => {
         { description: { $regex: search, $options: 'i' } },
         { brand: { $regex: search, $options: 'i' } },
         { fabric: { $regex: search, $options: 'i' } },
+        { productCode: { $regex: search, $options: 'i' } },
         { category: { $in: catIds } },
       ];
     }
@@ -156,7 +172,13 @@ const getSearchSuggestions = async (req, res) => {
 
     const [categories, products] = await Promise.all([
       Category.find({ name: { $regex: q, $options: 'i' }, isActive: true }).limit(5).select('name slug'),
-      Product.find({ title: { $regex: q, $options: 'i' }, isActive: true })
+      Product.find({
+        $or: [
+          { title: { $regex: q, $options: 'i' } },
+          { productCode: { $regex: q, $options: 'i' } }
+        ],
+        isActive: true
+      })
         .limit(10)
         .select('title slug thumbnail price')
         .populate('category', 'name'),
@@ -231,6 +253,14 @@ const createProduct = async (req, res) => {
   try {
     const data = req.body;
 
+    if (!data.productCode) {
+      return res.status(400).json({ success: false, message: 'Product Code / SKU is required' });
+    }
+    const existingCode = await Product.findOne({ productCode: data.productCode.trim() });
+    if (existingCode) {
+      return res.status(400).json({ success: false, message: 'Product Code already exists.' });
+    }
+
     if (!data.slug) {
       data.slug = slugify(data.title) + '-' + Date.now().toString().slice(-5);
     }
@@ -269,6 +299,16 @@ const updateProduct = async (req, res) => {
     }
     if (typeof data.specifications === 'string') {
       data.specifications = JSON.parse(data.specifications);
+    }
+
+    if (data.productCode) {
+      const existingCode = await Product.findOne({ 
+        productCode: data.productCode.trim(), 
+        _id: { $ne: req.params.id } 
+      });
+      if (existingCode) {
+        return res.status(400).json({ success: false, message: 'Product Code already exists.' });
+      }
     }
 
     const product = await Product.findById(req.params.id);

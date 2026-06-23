@@ -88,7 +88,10 @@ function ProductsContent() {
                     <div className="w-10 h-12 rounded bg-maroon overflow-hidden flex-shrink-0">
                       {p.thumbnail && <img src={p.thumbnail} alt="" className="w-full h-full object-cover" />}
                     </div>
-                    <span className="text-cream">{p.title}</span>
+                    <div className="flex flex-col">
+                      <span className="text-cream font-medium">{p.title}</span>
+                      {p.productCode && <span className="text-[10px] text-gold/60 mt-0.5 font-mono">Code: {p.productCode}</span>}
+                    </div>
                   </td>
                   <td className="p-4 text-cream/70">{p.category?.name || '—'}</td>
                   <td className="p-4 text-gold font-medium">₹{p.price.toLocaleString('en-IN')}</td>

@@ -39,6 +39,7 @@ const productSchema = new mongoose.Schema(
     brand: { type: String, default: 'Charithra Silks' },
     fabric: { type: String, default: '' }, // Silk, Cotton, Linen etc
     sku: { type: String, unique: true, sparse: true },
+    productCode: { type: String, required: true, unique: true, trim: true },
 
     mrp: { type: Number, required: true }, // original price
     price: { type: Number, required: true }, // selling price

@@ -45,6 +45,7 @@ const seed = async () => {
     const sampleProducts = [
       {
         title: 'Banarasi Silk Saree',
+        productCode: 'CS001',
         category: categoryDocs['Banaras']._id,
         fabric: 'Pure Silk',
         mrp: 5299,
@@ -72,6 +73,7 @@ const seed = async () => {
       },
       {
         title: 'Kanjivaram Pattu Saree',
+        productCode: 'CS002',
         category: categoryDocs['Pattu']._id,
         fabric: 'Kanjivaram Silk',
         mrp: 5899,
@@ -90,6 +92,7 @@ const seed = async () => {
       },
       {
         title: 'Mysore Crepe Saree',
+        productCode: 'CS003',
         category: categoryDocs['Mysore Crepe']._id,
         fabric: 'Crepe Silk',
         mrp: 2599,
@@ -107,6 +110,7 @@ const seed = async () => {
       },
       {
         title: 'Katan Banarasi Saree',
+        productCode: 'CS004',
         category: categoryDocs['Banaras']._id,
         fabric: 'Katan Silk',
         mrp: 6899,

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import BottomNav from '../../components/BottomNav';
@@ -9,6 +9,7 @@ import ProductCard from '../../components/ProductCard';
 import api from '../../lib/api';
 
 function SearchContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
   const [products, setProducts] = useState([]);
@@ -25,6 +26,10 @@ function SearchContent() {
       .get('/products', { params: { search: query } })
       .then(({ data }) => {
         if (data.success) {
+          if (data.exactMatchProductSlug) {
+            router.replace(`/product/${data.exactMatchProductSlug}`);
+            return;
+          }
           setProducts(data.products || []);
         }
       })

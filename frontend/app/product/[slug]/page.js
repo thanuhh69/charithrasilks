@@ -125,6 +125,9 @@ export default function ProductDetailPage() {
         {/* Details */}
         <div>
           <h1 className="font-serif text-2xl text-cream font-semibold">{product.title}</h1>
+          {product.productCode && (
+            <p className="text-xs text-gold/60 mt-1 font-mono">SKU: {product.productCode}</p>
+          )}
           {product.ratingCount > 0 && (
             <div className="flex items-center gap-2 mt-2 text-sm text-cream/70">
               <FiStar className="text-gold fill-gold" />
