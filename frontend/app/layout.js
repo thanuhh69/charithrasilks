@@ -4,6 +4,10 @@ import Providers from './providers';
 export const metadata = {
   title: 'Charithra Silks | Premium Sarees Online',
   description: 'Shop premium Banarasi, Kanjivaram, Mysore Crepe and handloom sarees at Charithra Silks.',
+  icons: {
+    icon: '/logo.jpg',
+    apple: '/logo.jpg',
+  },
 };
 
 export default function RootLayout({ children }) {
