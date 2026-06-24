@@ -183,17 +183,17 @@ export default function HomePage() {
               <h2 className="font-serif text-xl text-cream font-semibold">Shop by Category</h2>
               <Link href="/categories" className="text-gold text-sm hover:underline">View All</Link>
             </div>
-            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
+            <div className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-8 gap-x-4 gap-y-6 md:gap-4">
               {(categories.length ? categories : Array.from({ length: 8 })).map((cat, i) => (
                 <Link
                   key={cat?._id || i}
                   href={cat ? `/category/${cat.slug}` : '#'}
-                  className="flex flex-col items-center gap-2 group"
+                  className="flex flex-col items-center gap-2 group p-1.5"
                 >
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-gold/30 to-maroon overflow-hidden border-2 border-gold/30 group-hover:border-gold transition relative">
+                  <div className="w-[88px] h-[88px] md:w-20 md:h-20 rounded-full bg-gradient-to-br from-gold/30 to-maroon overflow-hidden border-2 border-gold/30 group-hover:border-gold transition relative shadow-lg">
                     {cat?.image && <Image src={cat.image} alt={cat.name} fill className="object-cover" unoptimized />}
                   </div>
-                  <span className="text-cream/80 text-xs text-center group-hover:text-gold transition">
+                  <span className="text-cream/80 text-[11px] md:text-xs text-center leading-tight group-hover:text-gold transition max-w-[95px] break-words">
                     {cat?.name || '...'}
                   </span>
                 </Link>
