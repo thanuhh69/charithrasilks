@@ -35,12 +35,16 @@ function MyOrdersContent() {
 
   return (
     <>
-      <div className="flex gap-4 border-b border-gold/20 mb-6 overflow-x-auto">
+      <div className="flex gap-2.5 mb-6 overflow-x-auto scrollbar-none pb-2 scroll-smooth">
         {TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`pb-2 text-sm whitespace-nowrap ${tab === t ? 'text-gold border-b-2 border-gold' : 'text-cream/50'}`}
+            className={`h-10 px-5 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition-colors flex items-center justify-center text-center ${
+              tab === t 
+                ? 'bg-gold text-maroon-dark font-semibold shadow-lg' 
+                : 'bg-maroon-dark/60 text-cream/60 hover:bg-maroon-dark hover:text-cream'
+            }`}
           >
             {t}
           </button>

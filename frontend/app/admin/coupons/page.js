@@ -88,7 +88,8 @@ function CouponsContent() {
         </form>
       )}
 
-      <div className="card overflow-x-auto">
+      {/* Desktop Table View */}
+      <div className="hidden md:block card overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gold/20 text-cream/60 text-left">
@@ -101,18 +102,66 @@ function CouponsContent() {
             </tr>
           </thead>
           <tbody>
-            {coupons.map((c) => (
-              <tr key={c._id} className="border-b border-gold/10">
-                <td className="p-4 text-gold font-medium">{c.code}</td>
-                <td className="p-4 text-cream/70">{c.discountType === 'percent' ? `${c.discountValue}%` : `₹${c.discountValue}`}</td>
-                <td className="p-4 text-cream/70">₹{c.minOrderValue}</td>
-                <td className="p-4 text-cream/60">{new Date(c.expiryDate).toLocaleDateString('en-IN')}</td>
-                <td className="p-4 text-cream/60">{c.usedCount}{c.usageLimit ? ` / ${c.usageLimit}` : ''}</td>
-                <td className="p-4"><button onClick={() => handleDelete(c._id)} className="text-red-400"><FiTrash2 size={14} /></button></td>
-              </tr>
-            ))}
+            {coupons.length === 0 ? (
+              <tr><td colSpan={6} className="p-6 text-center text-cream/50">No coupons found</td></tr>
+            ) : (
+              coupons.map((c) => (
+                <tr key={c._id} className="border-b border-gold/10">
+                  <td className="p-4 text-gold font-medium">{c.code}</td>
+                  <td className="p-4 text-cream/70">{c.discountType === 'percent' ? `${c.discountValue}%` : `₹${c.discountValue}`}</td>
+                  <td className="p-4 text-cream/70">₹{c.minOrderValue}</td>
+                  <td className="p-4 text-cream/60">{new Date(c.expiryDate).toLocaleDateString('en-IN')}</td>
+                  <td className="p-4 text-cream/60">{c.usedCount}{c.usageLimit ? ` / ${c.usageLimit}` : ''}</td>
+                  <td className="p-4"><button onClick={() => handleDelete(c._id)} className="text-red-400"><FiTrash2 size={14} /></button></td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="block md:hidden space-y-4">
+        {coupons.length === 0 ? (
+          <p className="text-center text-cream/50 py-6">No coupons found</p>
+        ) : (
+          coupons.map((c) => (
+            <div key={c._id} className="card p-4 flex flex-col gap-3 border border-gold/15">
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="text-gold font-bold text-base tracking-wider block">{c.code}</span>
+                  <span className="text-cream/50 text-xs block mt-0.5">{c.description || 'No description'}</span>
+                </div>
+                <button 
+                  onClick={() => handleDelete(c._id)} 
+                  className="text-red-400 hover:text-red-300 p-2 border border-red-500/10 rounded-lg hover:bg-red-500/5 transition"
+                >
+                  <FiTrash2 size={14} />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2.5 pt-3 border-t border-gold/10 text-xs">
+                <div>
+                  <span className="text-cream/50 block">Discount</span>
+                  <span className="text-cream font-semibold">{c.discountType === 'percent' ? `${c.discountValue}%` : `₹${c.discountValue}`}</span>
+                </div>
+                <div>
+                  <span className="text-cream/50 block">Min Order</span>
+                  <span className="text-cream font-semibold">₹{c.minOrderValue}</span>
+                </div>
+                <div>
+                  <span className="text-cream/50 block">Used</span>
+                  <span className="text-cream font-semibold">{c.usedCount}{c.usageLimit ? ` / ${c.usageLimit}` : ''}</span>
+                </div>
+              </div>
+
+              <div className="text-xs pt-2.5 border-t border-gold/5 flex justify-between items-center">
+                <span className="text-cream/50">Expires</span>
+                <span className="text-cream/80">{new Date(c.expiryDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

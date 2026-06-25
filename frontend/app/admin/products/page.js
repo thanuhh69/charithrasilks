@@ -46,7 +46,7 @@ function ProductsContent() {
   };
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-4 md:p-8">
       <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
         <h1 className="font-serif text-2xl text-cream font-semibold">Products</h1>
         <Link href="/admin/products/new" className="btn-primary flex items-center gap-2">
@@ -54,17 +54,19 @@ function ProductsContent() {
         </Link>
       </div>
 
+      {/* Search */}
       <div className="relative mb-6 max-w-md">
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search products..."
-          className="input-field pl-10"
+          className="input-field-icon w-full"
         />
-        <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gold/60" />
+        <FiSearch className="input-icon" />
       </div>
 
-      <div className="card overflow-x-auto">
+      {/* Desktop Table View */}
+      <div className="hidden md:block card overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gold/20 text-cream/60 text-left">
@@ -115,6 +117,65 @@ function ProductsContent() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="block md:hidden space-y-4">
+        {loading ? (
+          <p className="text-center text-cream/50 py-6">Loading...</p>
+        ) : products.length === 0 ? (
+          <p className="text-center text-cream/50 py-6">No products found</p>
+        ) : (
+          products.map((p) => (
+            <div key={p._id} className="card p-4 flex flex-col gap-3.5 border border-gold/15">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-14 rounded bg-maroon overflow-hidden flex-shrink-0 shadow-md">
+                  {p.thumbnail && <img src={p.thumbnail} alt="" className="w-full h-full object-cover" />}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-cream font-semibold truncate text-sm">{p.title}</h3>
+                  {p.productCode && <span className="text-[10px] text-gold/60 font-mono block mt-0.5">Code: {p.productCode}</span>}
+                  <p className="text-xs text-cream/50 mt-1">Category: {p.category?.name || '—'}</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-2.5 pt-3 border-t border-gold/10 text-xs">
+                <div>
+                  <span className="text-cream/50 block">Price</span>
+                  <span className="text-gold font-bold text-sm">₹{p.price.toLocaleString('en-IN')}</span>
+                </div>
+                <div>
+                  <span className="text-cream/50 block">Stock</span>
+                  <span className="text-cream font-semibold">{p.totalStock}</span>
+                </div>
+                <div className="flex flex-col items-end">
+                  <span className="text-cream/50 block mb-1">Status</span>
+                  <button
+                    onClick={() => handleToggleActive(p._id)}
+                    className={`text-[10px] font-semibold px-2.5 py-0.5 rounded ${p.isActive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}
+                  >
+                    {p.isActive ? 'Active' : 'Inactive'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2.5 border-t border-gold/5">
+                <Link 
+                  href={`/admin/products/${p._id}/edit`} 
+                  className="text-gold hover:text-gold-light flex items-center gap-1.5 text-xs px-3.5 py-2 border border-gold/30 rounded-lg hover:bg-gold/5 transition"
+                >
+                  <FiEdit2 size={12} /> Edit
+                </Link>
+                <button 
+                  onClick={() => handleDelete(p._id, p.title)} 
+                  className="text-cream/60 hover:text-red-400 flex items-center gap-1.5 text-xs px-3.5 py-2 border border-gold/10 rounded-lg hover:bg-red-500/5 transition"
+                >
+                  <FiTrash2 size={12} /> Delete
+                </button>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

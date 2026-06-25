@@ -41,51 +41,51 @@ function SettingsContent() {
 
   return (
     <div className="card p-6 max-w-md mx-auto space-y-6">
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="text-cream/70 text-xs block mb-1 font-medium">Name</label>
+          <label className="input-label">Name</label>
           <div className="relative">
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="input-field pl-10"
+              className="input-field-icon"
               placeholder="Your Name"
             />
-            <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gold/70" />
+            <FiUser className="input-icon" />
           </div>
         </div>
 
         <div>
-          <label className="text-cream/70 text-xs block mb-1 font-medium">Email Address</label>
+          <label className="input-label">Email Address</label>
           <div className="relative">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input-field pl-10"
+              className="input-field-icon"
               placeholder="email@example.com"
             />
-            <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-gold/70" />
+            <FiMail className="input-icon" />
           </div>
         </div>
 
         <div>
-          <label className="text-cream/40 text-xs block mb-1 font-medium">Verified Phone Number</label>
+          <label className="input-label text-cream/40">Verified Phone Number</label>
           <div className="relative opacity-60">
             <input
               type="text"
               disabled
               value={user?.mobile || 'Not Linked'}
-              className="input-field pl-10 bg-maroon/20 cursor-not-allowed"
+              className="input-field-icon bg-maroon/20 cursor-not-allowed"
             />
-            <FiPhone className="absolute left-3 top-1/2 -translate-y-1/2 text-gold/40" />
+            <FiPhone className="input-icon text-gold/40" />
           </div>
-          <p className="text-[10px] text-cream/40 mt-1">Phone number cannot be changed as it is verified via OTP.</p>
+          <p className="text-[10px] text-cream/40 mt-2">Phone number cannot be changed as it is verified via OTP.</p>
         </div>
 
-        <button type="submit" disabled={saving} className="btn-primary w-full mt-2">
+        <button type="submit" disabled={saving} className="btn-primary w-full mt-4">
           {saving ? 'Saving...' : 'Save Changes'}
         </button>
       </form>

@@ -165,20 +165,23 @@ export default function Header() {
       </div>
 
       {/* ================= MOBILE HEADER ================= */}
-      <div className="max-w-7xl mx-auto px-3 py-2.5 flex md:hidden items-center justify-between gap-2.5 w-full">
+      <div className="max-w-7xl mx-auto px-3 py-2.5 flex md:hidden items-center justify-between gap-1 w-full h-16 bg-maroon-dark">
         {/* Hamburger Menu Icon */}
-        <button className="text-gold text-2xl flex-shrink-0" onClick={() => setMenuOpen(!menuOpen)}>
+        <button 
+          className="text-gold text-2xl w-10 h-10 flex items-center justify-center flex-shrink-0 hover:text-gold-light transition"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
           {menuOpen ? <FiX /> : <FiMenu />}
         </button>
-
+ 
         {/* Myntra-style Rounded Search Box */}
-        <div ref={mobileContainerRef} className="flex-1 min-w-0 relative">
-          <div className="flex items-center bg-[#290d11] border border-gold/30 rounded-full pl-2.5 pr-3.5 py-1.5 w-full">
+        <div ref={mobileContainerRef} className="flex-1 min-w-0 relative mx-1">
+          <div className="flex items-center bg-[#290d11] border border-gold/30 rounded-full pl-3 pr-3.5 h-11 w-full">
             {/* Logo replaces the 'M' letter from Myntra reference */}
             <img
               src="/logo.jpg"
               alt="Logo"
-              className="w-6 h-6 rounded-full border border-gold/40 object-cover flex-shrink-0 mr-2"
+              className="w-7 h-7 rounded-full border border-gold/40 object-cover flex-shrink-0 mr-2"
             />
             {/* Input field with Myntra placeholder */}
             <input
@@ -188,14 +191,17 @@ export default function Header() {
               onChange={(e) => handleSearchChange(e.target.value)}
               onKeyDown={handleSearchSubmit}
               onFocus={() => searchQuery.trim() && setShowSuggestions(true)}
-              className="bg-transparent text-cream placeholder-cream/40 text-xs outline-none w-full min-w-0 py-0.5"
+              className="bg-transparent text-cream placeholder-cream/40 text-[11px] outline-none w-full min-w-0 py-1"
             />
             {/* Right search icon inside the field */}
-            <button onClick={triggerSearch} className="text-gold/70 hover:text-gold flex-shrink-0 ml-1.5">
-              <FiSearch className="text-sm" />
+            <button 
+              onClick={triggerSearch} 
+              className="text-gold/70 hover:text-gold flex-shrink-0 ml-1.5 w-6 h-6 flex items-center justify-center"
+            >
+              <FiSearch className="text-base" />
             </button>
           </div>
-
+ 
           {/* Mobile Autocomplete Suggestions */}
           {showSuggestions && (suggestions.categories.length > 0 || suggestions.products.length > 0) && (
             <div className="absolute top-full left-0 right-0 mt-1 bg-maroon-dark border border-gold/20 rounded-lg shadow-xl z-50 overflow-hidden max-h-60 overflow-y-auto divide-y divide-gold/10">
@@ -238,24 +244,33 @@ export default function Header() {
             </div>
           )}
         </div>
-
+ 
         {/* Mobile Icons: Wishlist, Profile, Cart */}
-        <div className="flex items-center gap-3.5 text-gold text-[20px] flex-shrink-0 pl-1">
+        <div className="flex items-center gap-1 text-gold text-xl flex-shrink-0">
           {/* Wishlist */}
-          <Link href="/wishlist" className="hover:text-gold-light transition">
+          <Link 
+            href="/wishlist" 
+            className="w-10 h-10 flex items-center justify-center hover:text-gold-light transition"
+          >
             <FiHeart />
           </Link>
           
           {/* Profile/Account */}
-          <Link href={isLoggedIn ? '/account' : '/login'} className="hover:text-gold-light transition">
+          <Link 
+            href={isLoggedIn ? '/account' : '/login'} 
+            className="w-10 h-10 flex items-center justify-center hover:text-gold-light transition"
+          >
             <FiUser />
           </Link>
-
+ 
           {/* Cart */}
-          <button onClick={goToCart} className="relative hover:text-gold-light transition">
+          <button 
+            onClick={goToCart} 
+            className="relative w-10 h-10 flex items-center justify-center hover:text-gold-light transition"
+          >
             <FiShoppingCart />
             {cart.summary.itemCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-gold text-maroon-dark text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">
+              <span className="absolute top-1.5 right-1.5 bg-gold text-maroon-dark text-[8px] font-bold rounded-full w-4 h-4 flex items-center justify-center border border-maroon-dark">
                 {cart.summary.itemCount}
               </span>
             )}

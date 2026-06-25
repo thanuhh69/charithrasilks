@@ -93,29 +93,29 @@ function LoginContent() {
 
         <div className="card p-6">
           {step === 'phone' && (
-            <form onSubmit={handleSendOtp} className="space-y-4">
-              <label className="text-cream/80 text-sm block">Mobile Number</label>
-              <div className="flex items-center input-field gap-2">
-                <FiPhone className="text-gold" />
-                <span className="text-cream/60">+91</span>
+            <form onSubmit={handleSendOtp} className="space-y-5">
+              <label className="input-label">Mobile Number</label>
+              <div className="flex items-center input-field gap-3">
+                <FiPhone className="text-gold text-xl flex-shrink-0" />
+                <span className="text-cream/60 font-medium">+91</span>
                 <input
                   type="tel"
                   maxLength={10}
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                   placeholder="9876543210"
-                  className="bg-transparent flex-1 outline-none text-cream"
+                  className="bg-transparent flex-1 outline-none text-cream w-full"
                 />
               </div>
-              <button type="submit" disabled={loading} className="btn-primary w-full">
+              <button type="submit" disabled={loading} className="btn-primary w-full mt-2">
                 {loading ? 'Sending OTP...' : 'Send OTP'}
               </button>
             </form>
           )}
 
           {step === 'otp' && (
-            <form onSubmit={handleVerifyOtp} className="space-y-4">
-              <p className="text-cream/70 text-sm">
+            <form onSubmit={handleVerifyOtp} className="space-y-5">
+              <p className="text-cream/70 text-sm mb-2">
                 Enter the 6-digit OTP sent to <span className="text-gold">+91 {phone}</span>
               </p>
               <input
@@ -124,15 +124,15 @@ function LoginContent() {
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
                 placeholder="••••••"
-                className="input-field text-center text-2xl tracking-widest"
+                className="input-field text-center text-2xl tracking-widest w-full"
               />
-              <button type="submit" disabled={loading} className="btn-primary w-full">
+              <button type="submit" disabled={loading} className="btn-primary w-full mt-2">
                 {loading ? 'Verifying...' : 'Verify & Continue'}
               </button>
               <button
                 type="button"
                 onClick={() => setStep('phone')}
-                className="text-gold text-sm w-full text-center"
+                className="text-gold text-sm w-full text-center hover:underline mt-2"
               >
                 Change mobile number
               </button>

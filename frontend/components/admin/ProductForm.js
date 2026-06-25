@@ -160,32 +160,47 @@ export default function ProductForm({ initialData = null, productId = null }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
-      <div className="card p-5 space-y-4">
-        <h2 className="text-cream font-medium">Basic Details</h2>
-        <div className="space-y-1">
-          <label className="text-xs text-cream/70 font-medium">Product Title *</label>
+      <div className="card p-5 space-y-5">
+        <h2 className="text-cream font-medium mb-1">Basic Details</h2>
+        <div>
+          <label className="text-xs text-cream/70 font-medium block mb-2">Product Title *</label>
           <input required placeholder="Product Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="input-field" />
         </div>
-        <div className="space-y-1">
-          <label className="text-xs text-cream/70 font-medium">Product Code / SKU *</label>
+        <div>
+          <label className="text-xs text-cream/70 font-medium block mb-2">Product Code / SKU *</label>
           <input required placeholder="Enter unique product code (e.g. CS001, CHS-0001)" value={form.productCode} onChange={(e) => setForm({ ...form, productCode: e.target.value })} className="input-field" />
         </div>
-        <div className="space-y-1">
-          <label className="text-xs text-cream/70 font-medium">Description</label>
+        <div>
+          <label className="text-xs text-cream/70 font-medium block mb-2">Description</label>
           <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="input-field" rows={3} />
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <select required value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="input-field">
-            <option value="">Select Category</option>
-            {categories.map((c) => <option key={c._id} value={c._id}>{c.name}</option>)}
-          </select>
-          <input placeholder="Fabric (e.g. Pure Silk)" value={form.fabric} onChange={(e) => setForm({ ...form, fabric: e.target.value })} className="input-field" />
+          <div>
+            <label className="text-xs text-cream/70 font-medium block mb-2">Category *</label>
+            <select required value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="input-field">
+              <option value="">Select Category</option>
+              {categories.map((c) => <option key={c._id} value={c._id}>{c.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs text-cream/70 font-medium block mb-2">Fabric</label>
+            <input placeholder="Fabric (e.g. Pure Silk)" value={form.fabric} onChange={(e) => setForm({ ...form, fabric: e.target.value })} className="input-field" />
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <input required type="number" placeholder="MRP (₹)" value={form.mrp} onChange={(e) => setForm({ ...form, mrp: e.target.value })} className="input-field" />
-          <input required type="number" placeholder="Selling Price (₹)" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="input-field" />
+          <div>
+            <label className="text-xs text-cream/70 font-medium block mb-2">MRP (₹) *</label>
+            <input required type="number" placeholder="MRP (₹)" value={form.mrp} onChange={(e) => setForm({ ...form, mrp: e.target.value })} className="input-field" />
+          </div>
+          <div>
+            <label className="text-xs text-cream/70 font-medium block mb-2">Selling Price (₹) *</label>
+            <input required type="number" placeholder="Selling Price (₹)" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="input-field" />
+          </div>
         </div>
-        <textarea placeholder="Care Instructions" value={form.careInstructions} onChange={(e) => setForm({ ...form, careInstructions: e.target.value })} className="input-field" rows={2} />
+        <div>
+          <label className="text-xs text-cream/70 font-medium block mb-2">Care Instructions</label>
+          <textarea placeholder="Care Instructions" value={form.careInstructions} onChange={(e) => setForm({ ...form, careInstructions: e.target.value })} className="input-field" rows={2} />
+        </div>
 
         <div className="flex gap-4 flex-wrap">
           {[

@@ -36,9 +36,9 @@ export default function AdminLoginPage() {
           <p className="text-cream/60 text-sm mt-2">Admin Panel Login</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="card p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="card p-6 space-y-5">
           <div>
-            <label className="text-cream/80 text-sm block mb-1">Email</label>
+            <label className="input-label">Email</label>
             <input
               type="email"
               required
@@ -49,7 +49,7 @@ export default function AdminLoginPage() {
             />
           </div>
           <div>
-            <label className="text-cream/80 text-sm block mb-1">Password</label>
+            <label className="input-label">Password</label>
             <input
               type="password"
               required
@@ -59,7 +59,7 @@ export default function AdminLoginPage() {
               className="input-field"
             />
           </div>
-          <button type="submit" disabled={loading} className="btn-primary w-full">
+          <button type="submit" disabled={loading} className="btn-primary w-full mt-2">
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>

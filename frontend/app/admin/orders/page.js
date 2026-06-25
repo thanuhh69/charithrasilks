@@ -45,32 +45,39 @@ function OrdersContent() {
   }, [tab, search]);
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-4 md:p-8">
       <h1 className="font-serif text-2xl text-cream font-semibold mb-6">Orders</h1>
 
-      <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+      {/* Tabs */}
+      <div className="flex gap-2.5 mb-6 overflow-x-auto scrollbar-none pb-2 scroll-smooth">
         {STATUS_TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${tab === t ? 'bg-gold text-maroon-dark font-semibold' : 'bg-maroon-dark/60 text-cream/60'}`}
+            className={`h-10 px-5 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition-colors flex items-center justify-center text-center ${
+              tab === t 
+                ? 'bg-gold text-maroon-dark font-semibold shadow-lg' 
+                : 'bg-maroon-dark/60 text-cream/60 hover:bg-maroon-dark hover:text-cream'
+            }`}
           >
             {t}
           </button>
         ))}
       </div>
 
+      {/* Search */}
       <div className="relative mb-6 max-w-md">
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by order ID..."
-          className="input-field pl-10"
+          className="input-field-icon w-full"
         />
-        <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gold/60" />
+        <FiSearch className="input-icon" />
       </div>
 
-      <div className="card overflow-x-auto">
+      {/* Desktop Table View */}
+      <div className="hidden md:block card overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gold/20 text-cream/60 text-left">
@@ -105,6 +112,63 @@ function OrdersContent() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="block md:hidden space-y-4">
+        {loading ? (
+          <p className="text-center text-cream/50 py-6">Loading...</p>
+        ) : orders.length === 0 ? (
+          <p className="text-center text-cream/50 py-6">No orders found</p>
+        ) : (
+          orders.map((o) => (
+            <div key={o._id} className="card p-4 space-y-3.5 border border-gold/15">
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="text-[10px] text-gold font-mono tracking-wider block">ORDER NUMBER</span>
+                  <span className="text-base font-bold text-cream">#{o.orderNumber}</span>
+                </div>
+                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusColor[o.orderStatus]}`}>
+                  {o.orderStatus}
+                </span>
+              </div>
+              
+              <div className="border-t border-gold/10 pt-3 space-y-2">
+                <div className="flex justify-between text-xs">
+                  <span className="text-cream/50">Customer</span>
+                  <span className="text-cream/90 font-medium truncate max-w-[180px]">
+                    {o.user?.name || o.user?.mobile || o.user?.email || '—'}
+                  </span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-cream/50">Date</span>
+                  <span className="text-cream/80">
+                    {new Date(o.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                  </span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-cream/50">Payment Status</span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${paymentColor[o.paymentStatus]}`}>
+                    {o.paymentStatus}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm pt-1.5 border-t border-gold/5 items-center">
+                  <span className="text-gold font-medium">Total Amount</span>
+                  <span className="text-gold font-bold text-base">₹{o.totalAmount.toLocaleString('en-IN')}</span>
+                </div>
+              </div>
+
+              <div className="pt-2 flex justify-end">
+                <Link 
+                  href={`/admin/orders/${o._id}`} 
+                  className="btn-primary py-2 px-5 text-xs font-semibold rounded-lg shadow-md hover:bg-gold-light transition"
+                >
+                  View Details
+                </Link>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
