@@ -51,10 +51,10 @@ const createRazorpayOrder = async (req, res) => {
 // @access  Private
 const placeOrder = async (req, res) => {
   try {
-    const { addressId, paymentMethod, razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
+    const { addressId, paymentMethod, razorpayOrderId, razorpayPaymentId, razorpaySignature, upiId, upiTransactionId } = req.body;
 
-    if (!['UPI', 'Razorpay', 'COD'].includes(paymentMethod)) {
-      return res.status(400).json({ success: false, message: 'Invalid payment method' });
+    if (paymentMethod !== 'UPI') {
+      return res.status(400).json({ success: false, message: 'Invalid payment method. Only UPI is accepted.' });
     }
 
     const address = req.user.addresses.find((a) => a._id.toString() === addressId);
@@ -164,6 +164,8 @@ const placeOrder = async (req, res) => {
       totalAmount: finalAmount,
       paymentMethod,
       paymentStatus,
+      upiId: upiId || null,
+      upiTransactionId: upiTransactionId || null,
       razorpayOrderId: razorpayOrderId || null,
       razorpayPaymentId: razorpayPaymentId || null,
       razorpaySignature: razorpaySignature || null,
