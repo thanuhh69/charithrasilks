@@ -194,22 +194,22 @@ export default function HomePage() {
     };
     load();
 
-    // Generate random layout coordinates for golden sparkles
-    const newSparkles = Array.from({ length: 30 }).map((_, i) => ({
+    // Generate random layout coordinates for golden sparkles (increased density for a richer feel)
+    const newSparkles = Array.from({ length: 80 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 95}%`,
-      size: `${Math.random() * 3 + 1.5}px`,
-      delay: `${Math.random() * 6}s`,
-      duration: `${Math.random() * 8 + 6}s`,
+      top: `${Math.random() * 98}%`,
+      size: `${Math.random() * 2.5 + 1.2}px`,
+      delay: `${Math.random() * 8}s`,
+      duration: `${Math.random() * 9 + 5}s`,
     }));
     setSparkles(newSparkles);
   }, []);
 
   return (
     <div className="min-h-screen pb-20 md:pb-0 flex flex-col justify-between bg-gradient-to-b from-[#2B0008] via-[#1A0307] to-[#130305] relative overflow-hidden text-cream">
-      {/* Sparkles Background layer */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+      {/* Sparkles Foreground Overlay (increased z-index to z-20 to float in front of hero banner, category arches, and other body content) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
         {sparkles.map((s) => (
           <div
             key={s.id}
