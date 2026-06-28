@@ -299,12 +299,12 @@ export default function Header() {
 
       {/* Drawer Panel */}
       <div 
-        className={`fixed inset-y-0 left-0 w-[85%] max-w-[360px] bg-maroon-dark border-r border-gold/20 z-55 flex flex-col md:hidden transition-all duration-300 transform ${
+        className={`fixed inset-y-0 left-0 w-[85%] max-w-[360px] bg-[#2b0810] border-r border-gold/20 z-55 flex flex-col md:hidden transition-all duration-300 transform ${
           menuOpen ? 'translate-x-0 pointer-events-auto' : '-translate-x-full pointer-events-none invisible'
         }`}
       >
         {/* Header Row */}
-        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-gold/15 h-16 bg-maroon-dark shrink-0">
+        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-gold/15 h-16 bg-[#2b0810] shrink-0">
           <button onClick={() => setMenuOpen(false)} className="text-gold text-2xl w-8 h-8 flex items-center justify-center hover:text-gold-light transition">
             <FiX />
           </button>
@@ -326,14 +326,22 @@ export default function Header() {
 
           {/* Icons */}
           <div className="flex items-center gap-2 text-gold text-xl flex-shrink-0">
-            <Link href="/wishlist" onClick={() => setMenuOpen(false)} className="hover:text-gold-light transition p-1">
+            <Link 
+              href="/wishlist" 
+              onClick={(e) => { e.preventDefault(); router.push('/wishlist'); setMenuOpen(false); }} 
+              className="hover:text-gold-light transition p-1"
+            >
               <FiHeart />
             </Link>
-            <Link href={isLoggedIn ? '/account' : '/login'} onClick={() => setMenuOpen(false)} className="hover:text-gold-light transition p-1">
+            <Link 
+              href={isLoggedIn ? '/account' : '/login'} 
+              onClick={(e) => { e.preventDefault(); router.push(isLoggedIn ? '/account' : '/login'); setMenuOpen(false); }} 
+              className="hover:text-gold-light transition p-1"
+            >
               <FiUser />
             </Link>
             <button 
-              onClick={() => { setMenuOpen(false); goToCart(); }} 
+              onClick={(e) => { e.preventDefault(); goToCart(); setMenuOpen(false); }} 
               className="relative hover:text-gold-light transition p-1"
             >
               <FiShoppingCart />
@@ -354,7 +362,7 @@ export default function Header() {
               <div key={item.label} className="border-b border-gold/10 pb-3">
                 <Link
                   href={item.href}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={(e) => { e.preventDefault(); router.push(item.href); setMenuOpen(false); }}
                   className={`block text-[18px] font-medium tracking-wide transition-colors ${
                     isActive ? 'text-gold font-bold' : 'text-cream/90 hover:text-gold'
                   }`}
