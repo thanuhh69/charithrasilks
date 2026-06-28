@@ -17,7 +17,7 @@ export default function Header() {
 
   const menuItems = [
     { label: 'Home', href: '/', icon: FiHome },
-    { label: 'Sarees', href: '/sarees', icon: FiLayers },
+    { label: 'Categories', href: '/categories', icon: FiLayers },
     { label: 'Accessories', href: '/accessories', icon: FiGrid },
     { label: 'Herbal Products', href: '/herbal-products', icon: FiDroplet },
     { label: 'Wishlist', href: '/wishlist', icon: FiHeart },
@@ -84,8 +84,8 @@ export default function Header() {
 
   const getIsActive = (href) => {
     if (href === '/') return pathname === '/';
-    if (href === '/sarees') {
-      return pathname === '/sarees' || pathname === '/categories' || pathname.startsWith('/category/');
+    if (href === '/categories') {
+      return pathname === '/categories' || pathname.startsWith('/category/') || pathname === '/sarees';
     }
     if (href === '/accessories') return pathname === '/accessories';
     if (href === '/herbal-products') return pathname === '/herbal-products';
@@ -128,7 +128,8 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-maroon-dark border-b border-gold/20 sticky top-0 z-40">
+    <>
+      <header className="bg-maroon-dark border-b border-gold/20 sticky top-0 z-40">
       {/* ================= DESKTOP HEADER ================= */}
       <div className="max-w-7xl mx-auto px-4 py-3 hidden md:flex items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition">
@@ -339,21 +340,27 @@ export default function Header() {
           </button>
         </div>
       </div>
+    </header>
 
-      {/* ================= REDESIGNED MOBILE MENU DRAWER ================= */}
+      {/* ================= REDESIGNED MOBILE MENU DRAWER (MOVED OUTSIDE HEADER) ================= */}
       {/* Backdrop */}
       <div 
-        className={`fixed inset-0 bg-[#3B0614]/20 backdrop-blur-sm z-50 transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 bg-[#3B0614]/40 z-[999] transition-opacity duration-300 md:hidden ${
           menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none invisible'
         }`}
+        style={{ zIndex: 999 }}
         onClick={handleCloseDrawer}
       />
 
       {/* Drawer Panel */}
       <div 
-        className={`fixed inset-y-0 left-0 w-[82%] max-w-[360px] bg-[#3B0614] border-r border-[rgba(212,175,55,0.15)] rounded-tr-[20px] rounded-br-[20px] z-55 flex flex-col md:hidden transition-transform duration-300 transform ${
+        className={`fixed inset-y-0 left-0 w-[82%] max-w-[360px] bg-[#3B0614] border-r border-[rgba(212,175,55,0.15)] rounded-tr-[20px] rounded-br-[20px] z-[1000] flex flex-col md:hidden transition-transform duration-300 transform ${
           menuOpen ? 'translate-x-0 pointer-events-auto' : '-translate-x-full pointer-events-none invisible'
         }`}
+        style={{
+          zIndex: 1000,
+          pointerEvents: menuOpen ? 'auto' : 'none'
+        }}
       >
         {/* Header Row */}
         <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[rgba(212,175,55,0.15)] h-16 bg-[#3B0614] rounded-tr-[20px] shrink-0">
@@ -372,7 +379,7 @@ export default function Header() {
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
               onKeyDown={handleSearchSubmit}
-              className="w-full bg-[#2a040d] border border-[#D4AF37]/35 rounded-full pl-3 pr-8 py-1.5 text-xs text-[#FFF8F0] placeholder-[#FFF8F0]/40 outline-none focus:border-[#D4AF37]"
+              className="w-full bg-[#2a040d] border border-[#D4AF37]/35 rounded-full pl-3 pr-8 py-1.5 text-xs text-[#FFFFFF] placeholder-[#FFFFFF]/40 outline-none focus:border-[#D4AF37]"
             />
             <button onClick={triggerSearch} className="absolute right-2 top-1/2 -translate-y-1/2 text-[#D4AF37] hover:text-[#C9A227] text-sm">
               <FiSearch />
@@ -424,9 +431,7 @@ export default function Header() {
                 >
                   <Icon className="text-[#D4AF37] text-lg flex-shrink-0" />
                   <span 
-                    className={`font-[600] text-[17px] tracking-[0.2px] ${
-                      isActive ? 'text-[#FFFFFF]' : 'text-[#FFF8F0]'
-                    }`}
+                    className="font-[600] text-[17px] tracking-[0.2px] text-[#FFFFFF]"
                   >
                     {item.label}
                   </span>
@@ -447,6 +452,6 @@ export default function Header() {
           </p>
         </div>
       </div>
-    </header>
+    </>
   );
 }
