@@ -215,16 +215,16 @@ function PayContent() {
               <p className="text-center text-cream/40 text-[10px] uppercase tracking-wider mb-3">Supported UPI Apps</p>
               <div className="flex justify-center items-center gap-3.5">
                 <div className="bg-white/95 px-3 py-2 rounded-lg border border-gold/15 h-11 w-16 flex items-center justify-center shadow-md">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Google_Pay_Logo.svg" alt="Google Pay" className="h-5 w-auto object-contain" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="Google Pay" className="h-5 w-auto object-contain" />
                 </div>
                 <div className="bg-white/95 px-3 py-2 rounded-lg border border-gold/15 h-11 w-16 flex items-center justify-center shadow-md">
                   <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" className="h-6 w-auto object-contain" />
                 </div>
                 <div className="bg-white/95 px-3 py-2 rounded-lg border border-gold/15 h-11 w-16 flex items-center justify-center shadow-md">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo.svg" alt="Paytm" className="h-4 w-auto object-contain" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" alt="Paytm" className="h-5 w-auto object-contain" />
                 </div>
                 <div className="bg-white/95 px-3 py-2 rounded-lg border border-gold/15 h-11 w-16 flex items-center justify-center shadow-md">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/c/c5/BHIM_logo.svg" alt="BHIM" className="h-5.5 w-auto object-contain" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/BHIM_logo.svg" alt="BHIM" className="h-5.5 w-auto object-contain" />
                 </div>
               </div>
             </div>
