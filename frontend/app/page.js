@@ -86,7 +86,7 @@ function BannerCarousel() {
                 <img 
                   src={b.image} 
                   alt={b.title} 
-                  className="w-full h-full object-cover object-center md:object-right-top" 
+                  className="w-full h-full object-cover object-right md:object-right-top" 
                 />
               )}
               {/* Left-leaning dark gradient overlay to ensure text readability */}
@@ -329,14 +329,18 @@ export default function HomePage() {
           <section className="mb-14 relative z-10">
             <div className="flex justify-between items-center mb-4">
               <h2 className="font-serif text-xl md:text-2xl text-cream font-semibold">New Arrivals</h2>
-              <Link href="/category/new-arrivals" className="text-gold text-sm hover:underline">View All</Link>
+              <Link href="/category/new-arrivals" className="text-gold text-sm hover:underline flex items-center gap-1">View All &rarr;</Link>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="flex overflow-x-auto gap-3 sm:gap-4 pb-4 scrollbar-none snap-x snap-mandatory scroll-smooth touch-pan-x">
               {loading
                 ? Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="card aspect-[3/4] animate-pulse bg-maroon/40" />
+                    <div key={i} className="card aspect-[3/4] w-[42vw] sm:w-[28vw] md:w-[240px] flex-shrink-0 animate-pulse bg-maroon/40" />
                   ))
-                : newArrivals.map((p) => <ProductCard key={p._id} product={p} />)}
+                : newArrivals.map((p) => (
+                    <div key={p._id} className="w-[42vw] sm:w-[28vw] md:w-[240px] flex-shrink-0 snap-start">
+                      <ProductCard product={p} />
+                    </div>
+                  ))}
             </div>
           </section>
 
@@ -344,14 +348,18 @@ export default function HomePage() {
           <section className="mb-14 relative z-10">
             <div className="flex justify-between items-center mb-4">
               <h2 className="font-serif text-xl md:text-2xl text-cream font-semibold">Best Deals</h2>
-              <Link href="/category/best-deals" className="text-gold text-sm hover:underline">View All</Link>
+              <Link href="/category/best-deals" className="text-gold text-sm hover:underline flex items-center gap-1">View All &rarr;</Link>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="flex overflow-x-auto gap-3 sm:gap-4 pb-4 scrollbar-none snap-x snap-mandatory scroll-smooth touch-pan-x">
               {loading
                 ? Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="card aspect-[3/4] animate-pulse bg-maroon/40" />
+                    <div key={i} className="card aspect-[3/4] w-[42vw] sm:w-[28vw] md:w-[240px] flex-shrink-0 animate-pulse bg-maroon/40" />
                   ))
-                : bestDeals.map((p) => <ProductCard key={p._id} product={p} />)}
+                : bestDeals.map((p) => (
+                    <div key={p._id} className="w-[42vw] sm:w-[28vw] md:w-[240px] flex-shrink-0 snap-start">
+                      <ProductCard product={p} />
+                    </div>
+                  ))}
             </div>
           </section>
 
