@@ -70,6 +70,7 @@ export default function Header() {
 
   const handleCloseDrawer = () => {
     setMenuOpen(false);
+    document.body.style.overflow = '';
     if (window.history.state?.drawerOpen === true) {
       window.history.back();
     }
@@ -77,9 +78,7 @@ export default function Header() {
 
   const handleLinkClick = (href) => {
     setMenuOpen(false);
-    if (window.history.state?.drawerOpen === true) {
-      window.history.back();
-    }
+    document.body.style.overflow = '';
     router.push(href);
   };
 
@@ -352,15 +351,15 @@ export default function Header() {
 
       {/* Drawer Panel */}
       <div 
-        className={`fixed inset-y-0 left-0 w-[85%] max-w-[360px] bg-[#3B0614] border-r border-[#D4AF37]/15 z-55 flex flex-col md:hidden transition-all duration-300 transform ${
+        className={`fixed inset-y-0 left-0 w-[82%] max-w-[360px] bg-[#3B0614] border-r border-[rgba(212,175,55,0.15)] rounded-tr-[20px] rounded-br-[20px] z-55 flex flex-col md:hidden transition-transform duration-300 transform ${
           menuOpen ? 'translate-x-0 pointer-events-auto' : '-translate-x-full pointer-events-none invisible'
         }`}
       >
         {/* Header Row */}
-        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[rgba(212,175,55,0.15)] h-16 bg-[#3B0614] shrink-0">
+        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[rgba(212,175,55,0.15)] h-16 bg-[#3B0614] rounded-tr-[20px] shrink-0">
           <button 
             onClick={(e) => { e.preventDefault(); handleCloseDrawer(); }} 
-            className="text-[#D4AF37] hover:text-[#C9A227] text-2xl w-8 h-8 flex items-center justify-center transition"
+            className="text-[#D4AF37] hover:text-[#C9A227] text-2xl w-8 h-8 flex items-center justify-center transition cursor-pointer"
           >
             <FiX />
           </button>
@@ -373,7 +372,7 @@ export default function Header() {
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
               onKeyDown={handleSearchSubmit}
-              className="w-full bg-[#2a040d] border border-[#D4AF37]/35 rounded-full pl-3 pr-8 py-1.5 text-xs text-[#F8F5F0] placeholder-[#F8F5F0]/40 outline-none focus:border-[#D4AF37]"
+              className="w-full bg-[#2a040d] border border-[#D4AF37]/35 rounded-full pl-3 pr-8 py-1.5 text-xs text-[#FFF8F0] placeholder-[#FFF8F0]/40 outline-none focus:border-[#D4AF37]"
             />
             <button onClick={triggerSearch} className="absolute right-2 top-1/2 -translate-y-1/2 text-[#D4AF37] hover:text-[#C9A227] text-sm">
               <FiSearch />
@@ -382,23 +381,21 @@ export default function Header() {
 
           {/* Icons */}
           <div className="flex items-center gap-2 text-[#D4AF37] text-xl flex-shrink-0">
-            <Link 
-              href="/wishlist" 
+            <button 
               onClick={(e) => { e.preventDefault(); handleLinkClick('/wishlist'); }} 
-              className="hover:text-[#C9A227] transition p-1"
+              className="hover:text-[#C9A227] transition p-1 cursor-pointer"
             >
               <FiHeart />
-            </Link>
-            <Link 
-              href={isLoggedIn ? '/account' : '/login'} 
+            </button>
+            <button 
               onClick={(e) => { e.preventDefault(); handleLinkClick(isLoggedIn ? '/account' : '/login'); }} 
-              className="hover:text-[#C9A227] transition p-1"
+              className="hover:text-[#C9A227] transition p-1 cursor-pointer"
             >
               <FiUser />
-            </Link>
+            </button>
             <button 
-              onClick={(e) => { e.preventDefault(); goToCart(); setMenuOpen(false); }} 
-              className="relative hover:text-[#C9A227] transition p-1"
+              onClick={(e) => { e.preventDefault(); goToCart(); handleCloseDrawer(); }} 
+              className="relative hover:text-[#C9A227] transition p-1 cursor-pointer"
             >
               <FiShoppingCart />
               {cart.summary.itemCount > 0 && (
@@ -411,22 +408,28 @@ export default function Header() {
         </div>
 
         {/* Drawer Menu Links */}
-        <div className="flex-grow overflow-y-auto px-4 py-4 space-y-1 bg-[#3B0614]">
+        <div className="flex-grow overflow-y-auto px-4 py-4 space-y-2 bg-[#3B0614]">
           {menuItems.map((item) => {
             const isActive = getIsActive(item.href);
             const Icon = item.icon;
             return (
-              <div key={item.label}>
+              <div key={item.label} className="w-full">
                 <button
                   onClick={(e) => { e.preventDefault(); handleLinkClick(item.href); }}
-                  className={`flex items-center gap-4 w-full h-[56px] px-[20px] rounded-[12px] transition-all duration-300 text-left ${
+                  className={`flex items-center gap-4 w-full h-[56px] px-[20px] rounded-[12px] transition-all duration-300 text-left cursor-pointer active:scale-[0.98] ${
                     isActive 
-                      ? 'bg-[rgba(212,175,55,0.15)] border-l-[4px] border-[#D4AF37]' 
-                      : 'text-[#F8F5F0]/90 hover:bg-[rgba(212,175,55,0.08)] active:bg-[rgba(212,175,55,0.12)]'
+                      ? 'bg-[#4C0E1E] border-l-[4px] border-[#D4AF37]' 
+                      : 'hover:bg-[rgba(212,175,55,0.05)] active:bg-[rgba(212,175,55,0.08)]'
                   }`}
                 >
                   <Icon className="text-[#D4AF37] text-lg flex-shrink-0" />
-                  <span className="text-[#F8F5F0] font-medium tracking-wide text-sm">{item.label}</span>
+                  <span 
+                    className={`font-[600] text-[17px] tracking-[0.2px] ${
+                      isActive ? 'text-[#FFFFFF]' : 'text-[#FFF8F0]'
+                    }`}
+                  >
+                    {item.label}
+                  </span>
                 </button>
                 {/* Divider line */}
                 {menuItems.indexOf(item) < menuItems.length - 1 && (
@@ -438,8 +441,8 @@ export default function Header() {
         </div>
 
         {/* Bottom Area of the Drawer */}
-        <div className="p-4 border-t border-[rgba(212,175,55,0.15)] bg-[#3B0614] shrink-0 text-center">
-          <p className="text-[10px] text-[#F8F5F0]/40 font-mono tracking-widest uppercase">
+        <div className="p-4 border-t border-[rgba(212,175,55,0.15)] bg-[#3B0614] rounded-br-[20px] shrink-0 text-center">
+          <p className="text-[10px] text-[#F5E6C8] font-mono tracking-widest uppercase">
             © {new Date().getFullYear()} Charithra Silks
           </p>
         </div>
