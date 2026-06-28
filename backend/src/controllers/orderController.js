@@ -53,7 +53,7 @@ const placeOrder = async (req, res) => {
   try {
     const { addressId, paymentMethod, razorpayOrderId, razorpayPaymentId, razorpaySignature, upiId, upiTransactionId } = req.body;
 
-    if (paymentMethod !== 'UPI') {
+    if (!['UPI', 'UPI_APP', 'UPI_QR'].includes(paymentMethod)) {
       return res.status(400).json({ success: false, message: 'Invalid payment method. Only UPI is accepted.' });
     }
 
@@ -169,8 +169,13 @@ const placeOrder = async (req, res) => {
       razorpayOrderId: razorpayOrderId || null,
       razorpayPaymentId: razorpayPaymentId || null,
       razorpaySignature: razorpaySignature || null,
-      orderStatus: 'Placed',
-      statusHistory: [{ status: 'Placed', note: 'Order placed by customer' }],
+      orderStatus: ['UPI_APP', 'UPI_QR'].includes(paymentMethod) ? 'Awaiting Payment Verification' : 'Placed',
+      statusHistory: [
+        {
+          status: ['UPI_APP', 'UPI_QR'].includes(paymentMethod) ? 'Awaiting Payment Verification' : 'Placed',
+          note: ['UPI_APP', 'UPI_QR'].includes(paymentMethod) ? 'Order placed, awaiting customer payment proof' : 'Order placed by customer',
+        },
+      ],
       expectedDeliveryDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000), // +4 days estimate
     });
 
@@ -426,6 +431,114 @@ const getOrderStats = async (req, res) => {
   }
 };
 
+// @desc    Submit payment proof (UTR / Transaction ID & Screenshot) for UPI order
+// @route   PUT /api/orders/:id/submit-payment
+// @access  Private
+const submitPaymentProof = async (req, res) => {
+  try {
+    const { utrNumber } = req.body;
+    if (!utrNumber || utrNumber.trim().length < 6) {
+      return res.status(400).json({ success: false, message: 'Please provide a valid UTR / Transaction ID' });
+    }
+
+    const order = await Order.findOne({ _id: req.params.id, user: req.user._id });
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    // Check if UTR is already in use by another order
+    const utrExists = await Order.findOne({ utrNumber: utrNumber.trim(), _id: { $ne: order._id } });
+    if (utrExists) {
+      return res.status(400).json({ success: false, message: 'This UTR / Transaction ID has already been submitted for another order' });
+    }
+
+    order.utrNumber = utrNumber.trim();
+    if (req.file) {
+      order.paymentScreenshot = req.file.path;
+    }
+    
+    order.verificationStatus = 'Pending';
+    order.paymentSubmissionTime = new Date();
+    order.orderStatus = 'Awaiting Payment Verification';
+    order.statusHistory.push({
+      status: 'Awaiting Payment Verification',
+      note: `Payment proof submitted. UTR: ${utrNumber}`,
+    });
+
+    await order.save();
+    res.json({ success: true, order, message: 'Payment details submitted successfully' });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
+// @desc    Verify payment and confirm order (admin)
+// @route   PUT /api/admin/orders/:id/verify-payment
+// @access  Private (admin)
+const verifyPayment = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    if (order.orderStatus !== 'Awaiting Payment Verification') {
+      return res.status(400).json({ success: false, message: 'Order is not awaiting payment verification' });
+    }
+
+    order.orderStatus = 'Confirmed';
+    order.paymentStatus = 'Paid';
+    order.verificationStatus = 'Verified';
+    order.verifiedBy = req.admin._id;
+    order.verifiedAt = new Date();
+    order.confirmedByAdmin = true;
+    order.confirmedAt = new Date();
+
+    order.statusHistory.push({
+      status: 'Confirmed',
+      note: `Payment verified by ${req.admin.name}. Order confirmed.`,
+    });
+
+    await order.save();
+    res.json({ success: true, order, message: 'Payment verified and order confirmed successfully' });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
+// @desc    Reject payment and fail order (admin)
+// @route   PUT /api/admin/orders/:id/reject-payment
+// @access  Private (admin)
+const rejectPayment = async (req, res) => {
+  try {
+    const { reason } = req.body;
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    if (order.orderStatus !== 'Awaiting Payment Verification') {
+      return res.status(400).json({ success: false, message: 'Order is not awaiting payment verification' });
+    }
+
+    order.orderStatus = 'Payment Failed';
+    order.paymentStatus = 'Failed';
+    order.verificationStatus = 'Rejected';
+    order.verifiedBy = req.admin._id;
+    order.verifiedAt = new Date();
+
+    order.statusHistory.push({
+      status: 'Payment Failed',
+      note: `Payment rejected by ${req.admin.name}. Reason: ${reason || 'Invalid details'}`,
+    });
+
+    await order.save();
+    res.json({ success: true, order, message: 'Payment rejected successfully' });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
 module.exports = {
   createRazorpayOrder,
   placeOrder,
@@ -439,4 +552,7 @@ module.exports = {
   updatePaymentStatus,
   updateAdminNotes,
   getOrderStats,
+  submitPaymentProof,
+  verifyPayment,
+  rejectPayment,
 };

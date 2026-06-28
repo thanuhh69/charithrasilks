@@ -18,68 +18,48 @@ function PaymentContent() {
   const { cart, fetchCart } = useCart();
   const { user } = useAuth();
 
-  const [method, setMethod] = useState('UPI');
+  const [method, setMethod] = useState('');
   const [placing, setPlacing] = useState(false);
+  const [settings, setSettings] = useState(null);
+  const [loadingSettings, setLoadingSettings] = useState(true);
+
+  useEffect(() => {
+    api.get('/payment-settings')
+      .then(({ data }) => {
+        if (data.success) {
+          setSettings(data.settings);
+          if (data.settings.enableUpiPayments) {
+            setMethod('UPI_APP');
+          } else if (data.settings.enableQrPayments) {
+            setMethod('UPI_QR');
+          }
+        }
+      })
+      .catch(() => {
+        toast.error('Failed to load payment configurations');
+      })
+      .finally(() => {
+        setLoadingSettings(false);
+      });
+  }, []);
 
   const shipping = cart.summary.totalAmount >= 999 ? 0 : 99;
   const total = cart.summary.totalAmount + shipping;
 
-  const placeOrderDirect = async (extra = {}) => {
+  const placeOrderDirect = async () => {
     setPlacing(true);
     try {
       const { data } = await api.post('/orders', {
         addressId,
         paymentMethod: method,
-        ...extra,
       });
       if (data.success) {
         await fetchCart();
-        router.push(`/order-success/${data.order._id}`);
+        router.push(`/checkout/pay/${data.order._id}`);
       }
     } catch (err) {
       toast.error(err?.response?.data?.message || 'Could not place order');
     } finally {
-      setPlacing(false);
-    }
-  };
-
-  const handleRazorpayPayment = async () => {
-    setPlacing(true);
-    try {
-      const { data } = await api.post('/orders/razorpay/create');
-      if (!data.success) throw new Error(data.message);
-
-      const { razorpayOrder, keyId } = data;
-
-      const options = {
-        key: keyId,
-        amount: razorpayOrder.amount,
-        currency: razorpayOrder.currency,
-        name: 'Charithra Silks',
-        description: 'Saree Purchase',
-        order_id: razorpayOrder.id,
-        prefill: {
-          name: user?.name || '',
-          email: user?.email || '',
-          contact: user?.mobile || '',
-        },
-        theme: { color: '#d4af37' },
-        handler: async function (response) {
-          await placeOrderDirect({
-            razorpayOrderId: response.razorpay_order_id,
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpaySignature: response.razorpay_signature,
-          });
-        },
-        modal: {
-          ondismiss: () => setPlacing(false),
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (err) {
-      toast.error(err?.response?.data?.message || 'Payment gateway not configured yet');
       setPlacing(false);
     }
   };
@@ -89,17 +69,15 @@ function PaymentContent() {
       toast.error('Please select an address first');
       return;
     }
-    if (method === 'Razorpay') {
-      handleRazorpayPayment();
-    } else {
-      placeOrderDirect();
+    if (!method) {
+      toast.error('Please select a payment method');
+      return;
     }
+    placeOrderDirect();
   };
 
   return (
     <>
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
-
       <div className="card p-4 mb-6 space-y-2 text-sm">
         <h2 className="text-cream font-medium mb-2">Order Summary</h2>
         <div className="flex justify-between text-cream/70"><span>Total MRP</span><span>₹{cart.summary.totalMRP.toLocaleString('en-IN')}</span></div>
@@ -110,28 +88,55 @@ function PaymentContent() {
 
       <h2 className="text-cream font-medium mb-3">Payment Methods</h2>
       <div className="space-y-3 mb-8">
-        {[
-          { id: 'UPI', label: 'UPI', desc: 'Google Pay, PhonePe, Paytm' },
-          { id: 'Razorpay', label: 'Razorpay (Cards, NetBanking, Wallets)', desc: '' },
-          { id: 'COD', label: 'Cash on Delivery', desc: '' },
-        ].map((m) => (
-          <button
-            key={m.id}
-            onClick={() => setMethod(m.id)}
-            className={`card w-full text-left p-4 flex items-center justify-between ${method === m.id ? 'border-gold' : ''}`}
-          >
-            <div>
-              <p className="text-cream font-medium">{m.label}</p>
-              {m.desc && <p className="text-cream/50 text-xs">{m.desc}</p>}
-            </div>
-            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${method === m.id ? 'border-gold' : 'border-cream/30'}`}>
-              {method === m.id && <div className="w-2.5 h-2.5 rounded-full bg-gold" />}
-            </div>
-          </button>
-        ))}
+        {loadingSettings ? (
+          <div className="text-center py-6 text-cream/50">Loading payment methods...</div>
+        ) : !settings || (!settings.enableUpiPayments && !settings.enableQrPayments) ? (
+          <div className="text-center py-6 text-red-400/80 card p-4">
+            No payment methods are currently available. Please contact support.
+          </div>
+        ) : (
+          <>
+            {settings.enableUpiPayments && (
+              <button
+                onClick={() => setMethod('UPI_APP')}
+                className={`card w-full text-left p-4 flex items-center justify-between transition-all duration-300 hover:border-gold/50 ${
+                  method === 'UPI_APP' ? 'border-gold bg-gold/5' : ''
+                }`}
+              >
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-cream font-medium">Pay with UPI Apps</p>
+                    <span className="bg-gold/20 text-gold text-[10px] font-semibold px-2 py-0.5 rounded-full">Recommended</span>
+                  </div>
+                  <p className="text-cream/50 text-xs mt-1">Google Pay, PhonePe, Paytm, BHIM, Amazon Pay UPI</p>
+                </div>
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${method === 'UPI_APP' ? 'border-gold' : 'border-cream/30'}`}>
+                  {method === 'UPI_APP' && <div className="w-2.5 h-2.5 rounded-full bg-gold" />}
+                </div>
+              </button>
+            )}
+
+            {settings.enableQrPayments && (
+              <button
+                onClick={() => setMethod('UPI_QR')}
+                className={`card w-full text-left p-4 flex items-center justify-between transition-all duration-300 hover:border-gold/50 ${
+                  method === 'UPI_QR' ? 'border-gold bg-gold/5' : ''
+                }`}
+              >
+                <div>
+                  <p className="text-cream font-medium">Scan & Pay QR Code</p>
+                  <p className="text-cream/50 text-xs mt-1">Generate a dynamic QR code to scan and pay from any app</p>
+                </div>
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${method === 'UPI_QR' ? 'border-gold' : 'border-cream/30'}`}>
+                  {method === 'UPI_QR' && <div className="w-2.5 h-2.5 rounded-full bg-gold" />}
+                </div>
+              </button>
+            )}
+          </>
+        )}
       </div>
 
-      <button onClick={handlePlaceOrder} disabled={placing} className="btn-primary w-full">
+      <button onClick={handlePlaceOrder} disabled={placing || !method} className="btn-primary w-full">
         {placing ? 'Processing...' : 'Place Order'}
       </button>
       <p className="text-center text-cream/40 text-xs mt-3">🔒 100% Secure Payments</p>

@@ -43,6 +43,16 @@ const bannerStorage = makeCloudinaryStorage({
   transformation: [{ width: 1600, crop: 'limit', quality: 'auto' }],
 });
 
+const screenshotStorage = makeCloudinaryStorage({
+  folder: 'charithra-silks/payments',
+  transformation: [{ width: 1000, crop: 'limit', quality: 'auto' }],
+});
+
+const qrStorage = makeCloudinaryStorage({
+  folder: 'charithra-silks/payment-settings',
+  transformation: [{ width: 800, crop: 'limit', quality: 'auto' }],
+});
+
 const uploadProductImages = multer({
   storage: productStorage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
@@ -65,4 +75,32 @@ const uploadBannerImage = multer({
   },
 });
 
-module.exports = { uploadProductImages, uploadBannerImage, cloudinary };
+const uploadPaymentScreenshot = multer({
+  storage: screenshotStorage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed'));
+    }
+    cb(null, true);
+  },
+});
+
+const uploadQrCode = multer({
+  storage: qrStorage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed'));
+    }
+    cb(null, true);
+  },
+});
+
+module.exports = {
+  uploadProductImages,
+  uploadBannerImage,
+  uploadPaymentScreenshot,
+  uploadQrCode,
+  cloudinary,
+};

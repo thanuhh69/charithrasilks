@@ -40,7 +40,7 @@ const orderSchema = new mongoose.Schema(
     shippingCharges: { type: Number, default: 0 },
     totalAmount: { type: Number, required: true },
 
-    paymentMethod: { type: String, enum: ['UPI', 'Razorpay', 'COD'], required: true },
+    paymentMethod: { type: String, enum: ['UPI', 'Razorpay', 'COD', 'UPI_APP', 'UPI_QR'], required: true },
     paymentStatus: {
       type: String,
       enum: ['Pending', 'Paid', 'Failed', 'Refunded'],
@@ -51,10 +51,30 @@ const orderSchema = new mongoose.Schema(
     razorpaySignature: { type: String, default: null },
     upiId: { type: String, default: null },
     upiTransactionId: { type: String, default: null },
+    utrNumber: { type: String, unique: true, sparse: true, trim: true },
+    paymentScreenshot: { type: String, default: null },
+    verificationStatus: {
+      type: String,
+      enum: ['Pending', 'Verified', 'Rejected'],
+      default: 'Pending',
+    },
+    verifiedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin', default: null },
+    verifiedAt: { type: Date, default: null },
+    paymentSubmissionTime: { type: Date, default: null },
 
     orderStatus: {
       type: String,
-      enum: ['Placed', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Returned'],
+      enum: [
+        'Placed',
+        'Awaiting Payment Verification',
+        'Confirmed',
+        'Processing',
+        'Shipped',
+        'Delivered',
+        'Cancelled',
+        'Returned',
+        'Payment Failed',
+      ],
       default: 'Placed',
     },
     statusHistory: [

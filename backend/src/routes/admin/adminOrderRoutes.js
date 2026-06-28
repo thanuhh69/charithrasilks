@@ -8,6 +8,8 @@ const {
   updatePaymentStatus,
   updateAdminNotes,
   getOrderStats,
+  verifyPayment,
+  rejectPayment,
 } = require('../../controllers/orderController');
 const { protectAdmin } = require('../../middleware/authAdmin');
 
@@ -20,5 +22,7 @@ router.put('/:id/confirm', confirmOrder);
 router.put('/:id/status', updateOrderStatus);
 router.put('/:id/payment-status', updatePaymentStatus);
 router.put('/:id/notes', updateAdminNotes);
+router.put('/:id/verify-payment', verifyPayment);
+router.put('/:id/reject-payment', rejectPayment);
 
 module.exports = router;

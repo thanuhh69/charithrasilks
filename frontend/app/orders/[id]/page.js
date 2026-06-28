@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { FiArrowLeft } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import Link from 'next/link';
 import AuthGuard from '../../../components/AuthGuard';
 import Header from '../../../components/Header';
 import api from '../../../lib/api';
@@ -94,6 +95,15 @@ function OrderDetailContent() {
           <p className="text-cream/70 text-sm">Courier: {order.courierPartner}</p>
           <p className="text-cream/70 text-sm">Tracking ID: {order.trackingId}</p>
         </div>
+      )}
+
+      {order.orderStatus === 'Awaiting Payment Verification' && !order.utrNumber && (
+        <Link 
+          href={`/checkout/pay/${order._id}`} 
+          className="btn-primary w-full text-center block mb-3 text-sm py-3"
+        >
+          Complete Payment / Submit Proof
+        </Link>
       )}
 
       {canCancel && (

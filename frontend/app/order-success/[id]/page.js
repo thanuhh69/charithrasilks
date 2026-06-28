@@ -26,17 +26,30 @@ function OrderSuccessContent() {
 
   const deliveryDate = order.expectedDeliveryDate ? new Date(order.expectedDeliveryDate) : null;
 
+  const isAwaitingVerification = order.orderStatus === 'Awaiting Payment Verification';
+
   return (
     <div className="card p-8 text-center max-w-md mx-auto">
       <div className="w-20 h-20 rounded-full border-2 border-gold flex items-center justify-center mx-auto mb-6">
         <FiCheck className="text-gold text-3xl" />
       </div>
-      <h1 className="font-serif text-2xl text-gold font-bold mb-2">Order Placed Successfully!</h1>
-      <p className="text-cream/70 mb-1">Order ID: #{order.orderNumber}</p>
-      <p className="text-cream/50 text-sm mb-1">We have sent the order details to your</p>
-      <p className="text-cream mb-6">{user?.mobile || user?.email}</p>
 
-      <p className="text-cream/50 text-sm">Delivery Expected</p>
+      {isAwaitingVerification ? (
+        <>
+          <h1 className="font-serif text-2xl text-gold font-bold mb-2">Payment Submitted Successfully!</h1>
+          <p className="text-cream/80 text-sm mb-6">Our team will verify it shortly.</p>
+        </>
+      ) : (
+        <>
+          <h1 className="font-serif text-2xl text-gold font-bold mb-2">Order Placed Successfully!</h1>
+          <p className="text-cream/50 text-sm mb-1">We have sent the order details to your</p>
+          <p className="text-cream mb-6">{user?.mobile || user?.email}</p>
+        </>
+      )}
+
+      <p className="text-cream/70 mb-1">Order ID: #{order.orderNumber}</p>
+
+      <p className="text-cream/50 text-sm mt-4">Delivery Expected</p>
       <p className="text-gold font-semibold mb-8">
         {deliveryDate ? `${deliveryDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}` : '2 - 4 Days'}
       </p>

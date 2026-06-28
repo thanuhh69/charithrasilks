@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   FiGrid, FiBox, FiShoppingBag, FiUsers, FiTag, FiList, FiLogOut, FiMenu, FiX, FiImage,
+  FiCheckSquare, FiSettings,
 } from 'react-icons/fi';
 import { useState } from 'react';
 import { useAdminAuth } from '../../context/AdminAuthContext';
@@ -14,6 +15,8 @@ const NAV = [
   { href: '/admin/categories', label: 'Categories', icon: FiList },
   { href: '/admin/banners', label: 'Banners', icon: FiImage },
   { href: '/admin/orders', label: 'Orders', icon: FiShoppingBag },
+  { href: '/admin/payment-verification', label: 'Payment Verification', icon: FiCheckSquare },
+  { href: '/admin/payment-settings', label: 'Payment Settings', icon: FiSettings },
   { href: '/admin/customers', label: 'Customers', icon: FiUsers },
   { href: '/admin/coupons', label: 'Coupons', icon: FiTag },
 ];
