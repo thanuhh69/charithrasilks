@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { FiSearch, FiHeart, FiShoppingCart, FiMenu, FiX, FiUser } from 'react-icons/fi';
+import { FiSearch, FiHeart, FiShoppingCart, FiMenu, FiX, FiUser, FiHome, FiGrid, FiDroplet, FiLayers } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import api from '../lib/api';
@@ -16,12 +16,12 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const menuItems = [
-    { label: 'Home', href: '/' },
-    { label: 'Sarees', href: '/categories' },
-    { label: 'Accessories', href: '/accessories' },
-    { label: 'Herbal Products', href: '/herbal-products' },
-    { label: 'Wishlist', href: '/wishlist' },
-    { label: 'My Account', href: isLoggedIn ? '/account' : '/login' },
+    { label: 'Home', href: '/', icon: FiHome },
+    { label: 'Sarees', href: '/sarees', icon: FiLayers },
+    { label: 'Accessories', href: '/accessories', icon: FiGrid },
+    { label: 'Herbal Products', href: '/herbal-products', icon: FiDroplet },
+    { label: 'Wishlist', href: '/wishlist', icon: FiHeart },
+    { label: 'My Account', href: isLoggedIn ? '/account' : '/login', icon: FiUser },
   ];
 
   // Search suggestions states
@@ -43,6 +43,59 @@ export default function Header() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Handle mobile drawer history pushstate and scroll locking
+  useEffect(() => {
+    if (menuOpen) {
+      if (window.history.state?.drawerOpen !== true) {
+        window.history.pushState({ drawerOpen: true }, '');
+      }
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    const handlePopState = (e) => {
+      if (menuOpen) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
+
+  const handleCloseDrawer = () => {
+    setMenuOpen(false);
+    if (window.history.state?.drawerOpen === true) {
+      window.history.back();
+    }
+  };
+
+  const handleLinkClick = (href) => {
+    setMenuOpen(false);
+    if (window.history.state?.drawerOpen === true) {
+      window.history.back();
+    }
+    router.push(href);
+  };
+
+  const getIsActive = (href) => {
+    if (href === '/') return pathname === '/';
+    if (href === '/sarees') {
+      return pathname === '/sarees' || pathname === '/categories' || pathname.startsWith('/category/');
+    }
+    if (href === '/accessories') return pathname === '/accessories';
+    if (href === '/herbal-products') return pathname === '/herbal-products';
+    if (href === '/wishlist') return pathname === '/wishlist';
+    if (href.startsWith('/account') || href.startsWith('/login')) {
+      return pathname.startsWith('/account') || pathname === '/login';
+    }
+    return pathname === href;
+  };
 
   const handleSearchChange = async (val) => {
     setSearchQuery(val);
@@ -291,21 +344,24 @@ export default function Header() {
       {/* ================= REDESIGNED MOBILE MENU DRAWER ================= */}
       {/* Backdrop */}
       <div 
-        className={`fixed inset-0 bg-black/60 z-50 transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 bg-[#3B0614]/20 backdrop-blur-sm z-50 transition-opacity duration-300 md:hidden ${
           menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none invisible'
         }`}
-        onClick={() => setMenuOpen(false)}
+        onClick={handleCloseDrawer}
       />
 
       {/* Drawer Panel */}
       <div 
-        className={`fixed inset-y-0 left-0 w-[85%] max-w-[360px] bg-[#2b0810] border-r border-gold/20 z-55 flex flex-col md:hidden transition-all duration-300 transform ${
+        className={`fixed inset-y-0 left-0 w-[85%] max-w-[360px] bg-[#3B0614] border-r border-[#D4AF37]/15 z-55 flex flex-col md:hidden transition-all duration-300 transform ${
           menuOpen ? 'translate-x-0 pointer-events-auto' : '-translate-x-full pointer-events-none invisible'
         }`}
       >
         {/* Header Row */}
-        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-gold/15 h-16 bg-[#2b0810] shrink-0">
-          <button onClick={() => setMenuOpen(false)} className="text-gold text-2xl w-8 h-8 flex items-center justify-center hover:text-gold-light transition">
+        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[rgba(212,175,55,0.15)] h-16 bg-[#3B0614] shrink-0">
+          <button 
+            onClick={(e) => { e.preventDefault(); handleCloseDrawer(); }} 
+            className="text-[#D4AF37] hover:text-[#C9A227] text-2xl w-8 h-8 flex items-center justify-center transition"
+          >
             <FiX />
           </button>
           
@@ -317,36 +373,36 @@ export default function Header() {
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
               onKeyDown={handleSearchSubmit}
-              className="w-full bg-[#130305] border border-gold/25 rounded-full pl-3 pr-8 py-1.5 text-xs text-cream placeholder-cream/40 outline-none"
+              className="w-full bg-[#2a040d] border border-[#D4AF37]/35 rounded-full pl-3 pr-8 py-1.5 text-xs text-[#F8F5F0] placeholder-[#F8F5F0]/40 outline-none focus:border-[#D4AF37]"
             />
-            <button onClick={triggerSearch} className="absolute right-2 top-1/2 -translate-y-1/2 text-gold/70 text-sm">
+            <button onClick={triggerSearch} className="absolute right-2 top-1/2 -translate-y-1/2 text-[#D4AF37] hover:text-[#C9A227] text-sm">
               <FiSearch />
             </button>
           </div>
 
           {/* Icons */}
-          <div className="flex items-center gap-2 text-gold text-xl flex-shrink-0">
+          <div className="flex items-center gap-2 text-[#D4AF37] text-xl flex-shrink-0">
             <Link 
               href="/wishlist" 
-              onClick={(e) => { e.preventDefault(); router.push('/wishlist'); setMenuOpen(false); }} 
-              className="hover:text-gold-light transition p-1"
+              onClick={(e) => { e.preventDefault(); handleLinkClick('/wishlist'); }} 
+              className="hover:text-[#C9A227] transition p-1"
             >
               <FiHeart />
             </Link>
             <Link 
               href={isLoggedIn ? '/account' : '/login'} 
-              onClick={(e) => { e.preventDefault(); router.push(isLoggedIn ? '/account' : '/login'); setMenuOpen(false); }} 
-              className="hover:text-gold-light transition p-1"
+              onClick={(e) => { e.preventDefault(); handleLinkClick(isLoggedIn ? '/account' : '/login'); }} 
+              className="hover:text-[#C9A227] transition p-1"
             >
               <FiUser />
             </Link>
             <button 
               onClick={(e) => { e.preventDefault(); goToCart(); setMenuOpen(false); }} 
-              className="relative hover:text-gold-light transition p-1"
+              className="relative hover:text-[#C9A227] transition p-1"
             >
               <FiShoppingCart />
               {cart.summary.itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gold text-maroon-dark text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center border border-maroon-dark">
+                <span className="absolute -top-1 -right-1 bg-[#D4AF37] text-[#3B0614] text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center border border-[#3B0614]">
                   {cart.summary.itemCount}
                 </span>
               )}
@@ -355,23 +411,37 @@ export default function Header() {
         </div>
 
         {/* Drawer Menu Links */}
-        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
+        <div className="flex-grow overflow-y-auto px-4 py-4 space-y-1 bg-[#3B0614]">
           {menuItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = getIsActive(item.href);
+            const Icon = item.icon;
             return (
-              <div key={item.label} className="border-b border-gold/10 pb-3">
-                <Link
-                  href={item.href}
-                  onClick={(e) => { e.preventDefault(); router.push(item.href); setMenuOpen(false); }}
-                  className={`block text-[18px] font-medium tracking-wide transition-colors ${
-                    isActive ? 'text-gold font-bold' : 'text-cream/90 hover:text-gold'
+              <div key={item.label}>
+                <button
+                  onClick={(e) => { e.preventDefault(); handleLinkClick(item.href); }}
+                  className={`flex items-center gap-4 w-full h-[56px] px-[20px] rounded-[12px] transition-all duration-300 text-left ${
+                    isActive 
+                      ? 'bg-[rgba(212,175,55,0.15)] border-l-[4px] border-[#D4AF37]' 
+                      : 'text-[#F8F5F0]/90 hover:bg-[rgba(212,175,55,0.08)] active:bg-[rgba(212,175,55,0.12)]'
                   }`}
                 >
-                  {item.label}
-                </Link>
+                  <Icon className="text-[#D4AF37] text-lg flex-shrink-0" />
+                  <span className="text-[#F8F5F0] font-medium tracking-wide text-sm">{item.label}</span>
+                </button>
+                {/* Divider line */}
+                {menuItems.indexOf(item) < menuItems.length - 1 && (
+                  <div className="h-[1px] bg-[rgba(212,175,55,0.15)] mx-4 my-1" />
+                )}
               </div>
             );
           })}
+        </div>
+
+        {/* Bottom Area of the Drawer */}
+        <div className="p-4 border-t border-[rgba(212,175,55,0.15)] bg-[#3B0614] shrink-0 text-center">
+          <p className="text-[10px] text-[#F8F5F0]/40 font-mono tracking-widest uppercase">
+            © {new Date().getFullYear()} Charithra Silks
+          </p>
         </div>
       </div>
     </header>
