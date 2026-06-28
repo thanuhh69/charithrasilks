@@ -11,7 +11,7 @@ export default function BottomNav() {
 
   const items = [
     { href: '/', icon: FiHome, label: 'Home' },
-    { href: '/categories', icon: FiGrid, label: 'Categories' },
+    { href: '/categories', icon: FiGrid, label: 'Sarees' },
     { href: '/account', icon: FiUser, label: 'Account' },
     { href: '/wishlist', icon: FiHeart, label: 'Wishlist' },
   ];
