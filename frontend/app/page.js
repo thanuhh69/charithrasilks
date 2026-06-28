@@ -76,23 +76,33 @@ function BannerCarousel() {
         {banners.map((b, i) => (
           <div
             key={b._id}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-600 ease-in-out flex flex-col md:flex-row ${
+            className={`absolute inset-0 w-full h-full transition-opacity duration-600 ease-in-out ${
               i === activeIdx ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
           >
-            {/* Left Side: Text Details (45% on desktop, full overlay on mobile) */}
-            <div className="w-full md:w-[45%] h-full flex flex-col justify-center px-6 sm:px-10 md:px-12 py-6 bg-gradient-to-r from-[#2B0008] via-[#1c0408] to-[#1c0408] md:to-transparent z-20 text-left relative">
-              {/* Subtle dark gradient mask for text contrast */}
-              <div className="absolute inset-0 bg-black/35 md:bg-transparent pointer-events-none z-0"></div>
-              
-              <div className="relative z-10 space-y-3 max-w-sm md:max-w-md">
-                <span className="inline-block bg-gold/15 text-gold text-[10px] md:text-xs font-bold px-3 py-1 rounded-full border border-gold/30 tracking-wider uppercase">
+            {/* Background Full Width Image */}
+            <div className="absolute inset-0 w-full h-full overflow-hidden">
+              {b.image && (
+                <img 
+                  src={b.image} 
+                  alt={b.title} 
+                  className="w-full h-full object-cover object-center" 
+                />
+              )}
+              {/* Left-leaning dark gradient overlay to ensure text readability */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10"></div>
+            </div>
+
+            {/* Text details container (layered on top) */}
+            <div className="absolute inset-0 flex items-center px-6 sm:px-12 md:px-20 z-20 text-left">
+              <div className="space-y-3 sm:space-y-4 max-w-sm sm:max-w-md md:max-w-xl">
+                <span className="inline-block bg-gold/20 text-gold text-[10px] md:text-xs font-bold px-3 py-1 rounded-full border border-gold/30 tracking-wider uppercase shadow-sm">
                   {b.subtitle || 'NEW COLLECTION'}
                 </span>
-                <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-cream font-extrabold leading-tight">
+                <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl text-cream font-extrabold leading-tight drop-shadow-md">
                   {b.title || 'Timeless Weaves, Eternal Elegance'}
                 </h2>
-                <p className="text-cream/80 text-xs md:text-sm font-sans line-clamp-2 leading-relaxed">
+                <p className="text-cream/90 text-xs sm:text-sm md:text-base font-sans line-clamp-2 leading-relaxed max-w-lg drop-shadow">
                   Discover the finest handcrafted sarees crafted for every special moment.
                 </p>
                 <div className="pt-2">
@@ -101,17 +111,6 @@ function BannerCarousel() {
                   </Link>
                 </div>
               </div>
-            </div>
-
-            {/* Right Side: Image Saree Model (55% on desktop, full background on mobile) */}
-            <div className="absolute md:relative md:w-[55%] inset-0 md:inset-auto h-full w-full z-10 overflow-hidden">
-              {b.image && (
-                <img 
-                  src={b.image} 
-                  alt={b.title} 
-                  className="w-full h-full object-cover object-center md:object-right-top" 
-                />
-              )}
             </div>
           </div>
         ))}
@@ -228,7 +227,7 @@ export default function HomePage() {
       <svg width="0" height="0" className="absolute">
         <defs>
           <clipPath id="arch-clip" clipPathUnits="objectBoundingBox">
-            <path d="M 0.5 0.046 Q 0.65 0.03, 0.73 0.107 Q 0.84 0.153, 0.9 0.269 Q 0.96 0.369, 0.96 0.5 Q 0.96 0.63, 0.9 0.73 Q 0.84 0.846, 0.73 0.892 Q 0.62 0.953, 0.5 0.953 Q 0.38 0.953, 0.27 0.892 Q 0.16 0.846, 0.1 0.73 Q 0.04 0.63, 0.04 0.5 Q 0.04 0.369, 0.1 0.269 Q 0.16 0.153, 0.27 0.107 Q 0.35 0.03, 0.5 0.046 Z" />
+            <path d="M 0.5 0.03 Q 0.75 0.03, 0.96 0.26 L 0.96 0.85 Q 0.96 0.93, 0.80 0.93 L 0.65 0.93 Q 0.58 0.93, 0.50 0.97 Q 0.42 0.93, 0.35 0.93 L 0.20 0.93 Q 0.04 0.93, 0.04 0.85 L 0.04 0.26 Q 0.25 0.03, 0.5 0.03 Z" />
           </clipPath>
         </defs>
       </svg>
@@ -248,9 +247,9 @@ export default function HomePage() {
             <div className="flex justify-between items-end mb-6">
               <div>
                 <h2 className="font-serif text-2xl md:text-3xl text-gold font-normal tracking-wide">
-                  The House Edit
+                  Shop by Category
                 </h2>
-                <div className="w-24 h-[1.5px] bg-gold/50 mt-1.5"></div>
+                <div className="w-28 h-[1.5px] bg-gold/50 mt-1.5"></div>
               </div>
               <Link href="/categories" className="text-gold text-sm hover:underline font-medium">View All</Link>
             </div>
@@ -264,63 +263,61 @@ export default function HomePage() {
                     href={cat ? `/category/${cat.slug}` : '#'}
                     className="flex flex-col items-center group active:scale-95 transition-transform duration-200"
                   >
-                    <div className="relative aspect-[3/4] w-full hover:-translate-y-1.5 hover:shadow-[0_0_15px_rgba(212,175,55,0.25)] transition-all duration-300 rounded-lg shadow-lg overflow-hidden">
-                      {/* Clipped image container */}
+                    <div className="relative aspect-[3/4.2] w-full hover:-translate-y-1.5 hover:shadow-[0_0_15px_rgba(212,175,55,0.25)] transition-all duration-300 rounded-lg shadow-lg overflow-hidden bg-[#2B0008]">
+                      {/* Clipped image and text container */}
                       <div className="absolute inset-0 overflow-hidden" style={{ clipPath: 'url(#arch-clip)' }}>
-                        {imageUrl ? (
-                          <img src={imageUrl} alt={cat?.name || ''} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        ) : (
-                          <div className="absolute inset-0 bg-maroon/20 animate-pulse" />
-                        )}
-                        {/* Saree name overlayed inside the arch at the bottom */}
-                        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#2B0008] via-[#2B0008]/65 to-transparent z-10"></div>
+                        {/* Image wrapper (top 72%) */}
+                        <div className="absolute inset-x-0 top-0 h-[72%] overflow-hidden">
+                          {imageUrl ? (
+                            <img 
+                              src={imageUrl} 
+                              alt={cat?.name || ''} 
+                              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                            />
+                          ) : (
+                            <div className="absolute inset-0 bg-maroon/20 animate-pulse" />
+                          )}
+                        </div>
+
+                        {/* Text block (bottom 28%) */}
+                        <div className="absolute inset-x-0 bottom-0 h-[28%] bg-[#2B0008] flex flex-col items-center justify-center px-1.5 text-center border-t border-gold/15">
+                          <span className="font-serif text-cream text-[10px] sm:text-xs font-semibold leading-tight tracking-wide">
+                            {cat?.name || '...'}
+                          </span>
+                          
+                          {/* Leaf flourish ornament */}
+                          <div className="flex items-center justify-center mt-1 scale-[0.65] origin-center opacity-80">
+                            <svg className="w-16 h-3 fill-none stroke-gold" viewBox="0 0 60 15" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M30 10 C25 8, 18 8, 10 12 C16 9, 22 9, 26 10" />
+                              <path d="M22 9 C18 6, 12 7, 8 10 C13 8, 18 8, 20 9" />
+                              <path d="M30 10 C35 8, 42 8, 50 12 C44 9, 38 9, 34 10" />
+                              <path d="M38 9 C42 6, 48 7, 52 10 C47 8, 42 8, 40 9" />
+                              <circle cx="30" cy="10" r="1.2" className="fill-gold" />
+                            </svg>
+                          </div>
+                        </div>
                       </div>
 
                       {/* Gold border path overlay */}
-                      <svg viewBox="0 0 100 130" preserveAspectRatio="none" className="absolute inset-0 w-full h-full pointer-events-none z-20">
+                      <svg viewBox="0 0 100 135" preserveAspectRatio="none" className="absolute inset-0 w-full h-full pointer-events-none z-20">
                         <path 
                           fill="none" 
                           stroke="#D4AF37" 
-                          strokeWidth="1.2" 
-                          d="M 50 6
-                             Q 65 4, 73 14
-                             Q 84 20, 90 35
-                             Q 96 48, 96 65
-                             Q 96 82, 90 95
-                             Q 84 110, 73 116
-                             Q 62 124, 50 124
-                             Q 38 124, 27 116
-                             Q 16 110, 10 95
-                             Q 4 82, 4 65
-                             Q 4 48, 10 35
-                             Q 16 20, 27 14
-                             Q 35 4, 50 6 Z" 
+                          strokeWidth="1.5" 
+                          d="M 50 4
+                             Q 75 4, 96 35
+                             L 96 115
+                             Q 96 125, 80 125
+                             L 65 125
+                             Q 58 125, 50 131
+                             Q 42 125, 35 125
+                             L 20 125
+                             Q 4 125, 4 115
+                             L 4 35
+                             Q 25 4, 50 4
+                             Z" 
                         />
                       </svg>
-
-                      {/* Category Name & leaf flourish */}
-                      <div className="absolute inset-x-0 bottom-2.5 z-30 flex flex-col items-center justify-end px-1.5 text-center pointer-events-none">
-                        <span className="font-serif text-cream text-[9px] sm:text-xs font-bold uppercase tracking-widest leading-none drop-shadow-md">
-                          {cat?.name ? cat.name.split(' ')[0] : '...'}
-                        </span>
-                        {cat?.name && cat.name.split(' ')[1] && (
-                          <span className="font-serif text-cream text-[7px] sm:text-[9px] uppercase tracking-wider leading-none mt-1 opacity-90 drop-shadow-md">
-                            {cat.name.split(' ').slice(1).join(' ')}
-                          </span>
-                        )}
-                        <span className="text-[5px] sm:text-[7px] text-gold/80 tracking-widest mt-1.5 opacity-80 font-sans">COLLECTIONS</span>
-                        
-                        {/* Leaf flourish ornament */}
-                        <div className="flex items-center justify-center gap-1.5 mt-1.5 opacity-85">
-                          <svg className="w-12 h-3 fill-none stroke-gold" viewBox="0 0 60 15" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M30 10 C25 8, 18 8, 10 12 C16 9, 22 9, 26 10" />
-                            <path d="M22 9 C18 6, 12 7, 8 10 C13 8, 18 8, 20 9" />
-                            <path d="M30 10 C35 8, 42 8, 50 12 C44 9, 38 9, 34 10" />
-                            <path d="M38 9 C42 6, 48 7, 52 10 C47 8, 42 8, 40 9" />
-                            <circle cx="30" cy="10" r="1" className="fill-gold" />
-                          </svg>
-                        </div>
-                      </div>
                     </div>
                   </Link>
                 );
