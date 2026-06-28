@@ -46,7 +46,7 @@ function BannerCarousel() {
 
   if (loading) {
     return (
-      <div className="h-[300px] sm:h-[360px] md:h-[450px] w-full bg-maroon/20 rounded-2xl animate-pulse flex items-center justify-center border border-gold/15 mb-8">
+      <div className="h-[380px] sm:h-[420px] md:h-[450px] w-full bg-maroon/20 rounded-2xl animate-pulse flex items-center justify-center border border-gold/15 mb-8">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-gold"></div>
       </div>
     );
@@ -54,7 +54,7 @@ function BannerCarousel() {
 
   if (banners.length === 0) {
     return (
-      <section className="relative rounded-2xl overflow-hidden mb-8 bg-gradient-to-r from-maroon-dark to-maroon h-[300px] sm:h-[360px] md:h-[450px] flex items-center px-6 md:px-16 border border-gold/15 shadow-2xl">
+      <section className="relative rounded-2xl overflow-hidden mb-8 bg-gradient-to-r from-maroon-dark to-maroon h-[380px] sm:h-[420px] md:h-[450px] flex items-center px-6 md:px-16 border border-gold/15 shadow-2xl">
         <div className="relative z-10 max-w-md space-y-4">
           <span className="bg-gold text-maroon-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">WELCOME</span>
           <h1 className="font-serif text-3xl md:text-5xl text-cream font-bold leading-tight">
@@ -70,7 +70,7 @@ function BannerCarousel() {
   }
 
   return (
-    <section className="relative rounded-2xl overflow-hidden mb-8 h-[300px] sm:h-[360px] md:h-[450px] group border border-gold/20 shadow-2xl bg-[#1c0408]">
+    <section className="relative rounded-2xl overflow-hidden mb-8 h-[380px] sm:h-[420px] md:h-[450px] group border border-gold/20 shadow-2xl bg-[#1c0408]">
       {/* Slides */}
       <div className="relative w-full h-full">
         {banners.map((b, i) => (
@@ -86,11 +86,11 @@ function BannerCarousel() {
                 <img 
                   src={b.image} 
                   alt={b.title} 
-                  className="w-full h-full object-cover object-center" 
+                  className="w-full h-full object-cover object-center md:object-right-top" 
                 />
               )}
               {/* Left-leaning dark gradient overlay to ensure text readability */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent z-10"></div>
             </div>
 
             {/* Text details container (layered on top) */}
@@ -132,14 +132,14 @@ function BannerCarousel() {
             <FiChevronRight className="text-lg" />
           </button>
 
-          {/* Pill Indicators */}
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
+          {/* Pill Indicators - Left Aligned to match screenshot */}
+          <div className="absolute bottom-6 left-6 sm:left-12 md:left-20 flex justify-start gap-1.5 z-20">
             {banners.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIdx(i)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === activeIdx ? 'bg-gold w-6 shadow-[0_0_8px_rgba(212,175,55,0.8)]' : 'bg-gold/40 w-2'
+                  i === activeIdx ? 'bg-gold w-6 shadow-[0_0_8px_rgba(212,175,55,0.8)]' : 'bg-gold/30 w-2'
                 }`}
               />
             ))}
@@ -254,8 +254,8 @@ export default function HomePage() {
               <Link href="/categories" className="text-gold text-sm hover:underline font-medium">View All</Link>
             </div>
 
-            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
-              {(categories.length ? categories : Array.from({ length: 6 })).map((cat, i) => {
+            <div className="grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4 md:gap-6">
+              {(categories.length ? categories : Array.from({ length: 8 })).map((cat, i) => {
                 const imageUrl = cat?.image || categoryFallbackImages[cat?.slug] || 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&auto=format&fit=crop&q=80';
                 return (
                   <Link
@@ -280,14 +280,14 @@ export default function HomePage() {
                         </div>
 
                         {/* Text block (bottom 28%) */}
-                        <div className="absolute inset-x-0 bottom-0 h-[28%] bg-[#2B0008] flex flex-col items-center justify-center px-1.5 text-center border-t border-gold/15">
-                          <span className="font-serif text-cream text-[10px] sm:text-xs font-semibold leading-tight tracking-wide">
+                        <div className="absolute inset-x-0 bottom-0 h-[28%] bg-[#2B0008] flex flex-col items-center justify-center px-1 text-center border-t border-gold/15">
+                          <span className="font-serif text-cream text-[8px] sm:text-xs font-semibold leading-tight tracking-wide break-words max-w-full">
                             {cat?.name || '...'}
                           </span>
                           
                           {/* Leaf flourish ornament */}
-                          <div className="flex items-center justify-center mt-1 scale-[0.65] origin-center opacity-80">
-                            <svg className="w-16 h-3 fill-none stroke-gold" viewBox="0 0 60 15" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                          <div className="flex items-center justify-center mt-0.5 scale-[0.55] sm:scale-[0.65] origin-center opacity-85">
+                            <svg className="w-16 h-3 fill-none stroke-gold" viewBox="0 0 60 15" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M30 10 C25 8, 18 8, 10 12 C16 9, 22 9, 26 10" />
                               <path d="M22 9 C18 6, 12 7, 8 10 C13 8, 18 8, 20 9" />
                               <path d="M30 10 C35 8, 42 8, 50 12 C44 9, 38 9, 34 10" />
