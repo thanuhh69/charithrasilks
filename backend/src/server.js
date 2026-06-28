@@ -12,6 +12,7 @@ const { notFound, errorHandler } = require('./middleware/errorHandler');
 // Public/storefront routes
 const authRoutes = require('./routes/authRoutes');
 const paymentSettingRoutes = require('./routes/paymentSettingRoutes');
+const instagramRoutes = require('./routes/instagramRoutes');
 const productRoutes = require('./routes/productRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const cartRoutes = require('./routes/cartRoutes');
@@ -23,6 +24,7 @@ const bannerRoutes = require('./routes/bannerRoutes');
 // Admin routes
 const adminAuthRoutes = require('./routes/admin/adminAuthRoutes');
 const adminPaymentRoutes = require('./routes/admin/adminPaymentRoutes');
+const adminInstagramRoutes = require('./routes/admin/adminInstagramRoutes');
 const adminProductRoutes = require('./routes/admin/adminProductRoutes');
 const adminCategoryRoutes = require('./routes/admin/adminCategoryRoutes');
 const adminOrderRoutes = require('./routes/admin/adminOrderRoutes');
@@ -64,6 +66,7 @@ app.get('/api/health', (req, res) => {
 // ===== Public / storefront routes =====
 app.use('/api/auth', authRoutes);
 app.use('/api/payment-settings', paymentSettingRoutes);
+app.use('/api/instagram', instagramRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/cart', cartRoutes);
@@ -75,6 +78,7 @@ app.use('/api/banners', bannerRoutes);
 // ===== Admin routes =====
 app.use('/api/admin/auth', adminAuthRoutes);
 app.use('/api/admin/payments', adminPaymentRoutes);
+app.use('/api/admin/instagram', adminInstagramRoutes);
 app.use('/api/admin/products', adminProductRoutes);
 app.use('/api/admin/categories', adminCategoryRoutes);
 app.use('/api/admin/orders', adminOrderRoutes);

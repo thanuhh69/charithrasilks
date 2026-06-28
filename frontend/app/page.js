@@ -9,6 +9,7 @@ import BottomNav from '../components/BottomNav';
 import Footer from '../components/Footer';
 import SplashScreen from '../components/SplashScreen';
 import ProductCard from '../components/ProductCard';
+import InstagramSection from '../components/InstagramSection';
 import api from '../lib/api';
 
 function BannerCarousel() {
@@ -436,6 +437,7 @@ export default function HomePage() {
         </main>
       </div>
 
+      <InstagramSection />
       <Footer />
       <BottomNav />
     </div>
