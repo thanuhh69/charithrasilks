@@ -6,7 +6,13 @@ const slugify = require('../utils/slugify');
 const getCategories = async (req, res) => {
   try {
     const type = req.query.type || 'Saree';
-    const categories = await Category.find({ isActive: true, type }).sort({ sortOrder: 1, name: 1 });
+    const query = { isActive: true };
+    if (type === 'Saree') {
+      query.type = { $in: ['Saree', null, undefined] };
+    } else {
+      query.type = type;
+    }
+    const categories = await Category.find(query).sort({ sortOrder: 1, name: 1 });
     res.json({ success: true, categories });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -19,7 +25,11 @@ const adminGetCategories = async (req, res) => {
   try {
     const query = {};
     if (req.query.type) {
-      query.type = req.query.type;
+      if (req.query.type === 'Saree') {
+        query.type = { $in: ['Saree', null, undefined] };
+      } else {
+        query.type = req.query.type;
+      }
     }
     const categories = await Category.find(query).sort({ sortOrder: 1, name: 1 });
     res.json({ success: true, categories });

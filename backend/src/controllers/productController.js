@@ -27,10 +27,11 @@ const getProducts = async (req, res) => {
     } = req.query;
 
     const query = { isActive: true };
-    if (type) {
-      query.type = type;
+    const typeFilter = type || 'Saree';
+    if (typeFilter === 'Saree') {
+      query.type = { $in: ['Saree', null, undefined] };
     } else {
-      query.type = 'Saree';
+      query.type = typeFilter;
     }
 
     if (category) {
@@ -218,7 +219,13 @@ const adminGetProducts = async (req, res) => {
     const { search, type, page = 1, limit = 20 } = req.query;
     const query = {};
     if (search) query.title = { $regex: search, $options: 'i' };
-    if (type) query.type = type;
+    if (type) {
+      if (type === 'Saree') {
+        query.type = { $in: ['Saree', null, undefined] };
+      } else {
+        query.type = type;
+      }
+    }
 
     const skip = (Number(page) - 1) * Number(limit);
     const [products, total] = await Promise.all([
