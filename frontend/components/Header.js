@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { FiSearch, FiHeart, FiShoppingCart, FiMenu, FiX, FiUser } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -10,9 +10,19 @@ import api from '../lib/api';
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const { isLoggedIn, user } = useAuth();
   const { cart, goToCart } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const menuItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Categories', href: '/categories' },
+    { label: 'Accessories', href: '/accessories' },
+    { label: 'Herbal Products', href: '/herbal-products' },
+    { label: 'Wishlist', href: '/wishlist' },
+    { label: 'My Account', href: isLoggedIn ? '/account' : '/login' },
+  ];
 
   // Search suggestions states
   const [searchQuery, setSearchQuery] = useState('');
@@ -278,17 +288,84 @@ export default function Header() {
         </div>
       </div>
 
-      {/* ================= MOBILE MENU DRAWER ================= */}
+      {/* ================= REDESIGNED MOBILE MENU DRAWER ================= */}
+      {/* Backdrop */}
       {menuOpen && (
-        <div className="md:hidden bg-maroon-dark border-t border-gold/20 px-4 py-3 flex flex-col gap-3 text-cream relative">
-          <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
-          <Link href="/categories" onClick={() => setMenuOpen(false)}>Categories</Link>
-          <Link href="/wishlist" onClick={() => setMenuOpen(false)}>Wishlist</Link>
-          <Link href={isLoggedIn ? '/account' : '/login'} onClick={() => setMenuOpen(false)}>
-            {isLoggedIn ? 'My Account' : 'Sign In'}
-          </Link>
-        </div>
+        <div 
+          className="fixed inset-0 bg-black/60 z-50 transition-opacity md:hidden" 
+          onClick={() => setMenuOpen(false)}
+        />
       )}
+
+      {/* Drawer Panel */}
+      <div 
+        className={`fixed inset-y-0 left-0 w-[85%] max-w-[360px] bg-[#1a0307] border-r border-gold/20 z-55 flex flex-col transition-transform duration-300 md:hidden ${
+          menuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {/* Header Row */}
+        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-gold/15 h-16 bg-[#2B0008] shrink-0">
+          <button onClick={() => setMenuOpen(false)} className="text-gold text-2xl w-8 h-8 flex items-center justify-center hover:text-gold-light transition">
+            <FiX />
+          </button>
+          
+          {/* Mobile Drawer Search Box */}
+          <div className="flex-1 relative min-w-0">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              onKeyDown={handleSearchSubmit}
+              className="w-full bg-[#130305] border border-gold/25 rounded-full pl-3 pr-8 py-1.5 text-xs text-cream placeholder-cream/40 outline-none"
+            />
+            <button onClick={triggerSearch} className="absolute right-2 top-1/2 -translate-y-1/2 text-gold/70 text-sm">
+              <FiSearch />
+            </button>
+          </div>
+
+          {/* Icons */}
+          <div className="flex items-center gap-2 text-gold text-xl flex-shrink-0">
+            <Link href="/wishlist" onClick={() => setMenuOpen(false)} className="hover:text-gold-light transition p-1">
+              <FiHeart />
+            </Link>
+            <Link href={isLoggedIn ? '/account' : '/login'} onClick={() => setMenuOpen(false)} className="hover:text-gold-light transition p-1">
+              <FiUser />
+            </Link>
+            <button 
+              onClick={() => { setMenuOpen(false); goToCart(); }} 
+              className="relative hover:text-gold-light transition p-1"
+            >
+              <FiShoppingCart />
+              {cart.summary.itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-gold text-maroon-dark text-[8px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center border border-maroon-dark">
+                  {cart.summary.itemCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Drawer Menu Links */}
+        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <div key={item.label} className="border-b border-gold/10 pb-3">
+                <Link
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`block text-[18px] font-medium tracking-wide transition-colors ${
+                    isActive ? 'text-gold font-bold' : 'text-cream/90 hover:text-gold'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </header>
   );
 }

@@ -21,11 +21,17 @@ const getProducts = async (req, res) => {
       isFeatured,
       isNewArrival,
       isBestDeal,
+      type,
       page = 1,
       limit = 12,
     } = req.query;
 
     const query = { isActive: true };
+    if (type) {
+      query.type = type;
+    } else {
+      query.type = 'Saree';
+    }
 
     if (category) {
       const cat = await Category.findOne({ slug: category });
@@ -209,9 +215,10 @@ const getSearchSuggestions = async (req, res) => {
 // @access  Private (admin)
 const adminGetProducts = async (req, res) => {
   try {
-    const { search, page = 1, limit = 20 } = req.query;
+    const { search, type, page = 1, limit = 20 } = req.query;
     const query = {};
     if (search) query.title = { $regex: search, $options: 'i' };
+    if (type) query.type = type;
 
     const skip = (Number(page) - 1) * Number(limit);
     const [products, total] = await Promise.all([
@@ -373,6 +380,30 @@ const toggleProductActive = async (req, res) => {
   }
 };
 
+// @desc    Get product stats by type (admin)
+// @route   GET /api/admin/products/stats
+// @access  Private (admin)
+const adminGetProductStats = async (req, res) => {
+  try {
+    const types = ['Saree', 'Accessory', 'Herbal'];
+    const stats = {};
+
+    for (const t of types) {
+      const [total, active, outOfStock, featured] = await Promise.all([
+        Product.countDocuments({ type: t }),
+        Product.countDocuments({ type: t, isActive: true }),
+        Product.countDocuments({ type: t, totalStock: 0 }),
+        Product.countDocuments({ type: t, isFeatured: true }),
+      ]);
+      stats[t] = { total, active, outOfStock, featured };
+    }
+
+    res.json({ success: true, stats });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 module.exports = {
   getProducts,
   getProductBySlug,
@@ -384,4 +415,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   toggleProductActive,
+  adminGetProductStats,
 };

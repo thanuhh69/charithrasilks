@@ -9,6 +9,7 @@ const categorySchema = new mongoose.Schema(
     description: { type: String, default: '' },
     isActive: { type: Boolean, default: true },
     sortOrder: { type: Number, default: 0 },
+    type: { type: String, enum: ['Saree', 'Accessory', 'Herbal'], default: 'Saree', index: true },
   },
   { timestamps: true }
 );

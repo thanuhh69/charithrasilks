@@ -7,6 +7,7 @@ const {
   updateProduct,
   deleteProduct,
   toggleProductActive,
+  adminGetProductStats,
 } = require('../../controllers/productController');
 const { protectAdmin } = require('../../middleware/authAdmin');
 const { uploadProductImages } = require('../../config/upload');
@@ -14,6 +15,7 @@ const { uploadProductImages } = require('../../config/upload');
 router.use(protectAdmin);
 
 router.get('/', adminGetProducts);
+router.get('/stats', adminGetProductStats);
 router.get('/:id', adminGetProduct);
 router.post('/', uploadProductImages.array('images', 10), createProduct);
 router.put('/:id', uploadProductImages.array('images', 10), updateProduct);

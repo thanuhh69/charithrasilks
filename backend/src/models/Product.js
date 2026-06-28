@@ -63,6 +63,13 @@ const productSchema = new mongoose.Schema(
     ratingCount: { type: Number, default: 0 },
     reviews: [reviewSchema],
 
+    type: { type: String, enum: ['Saree', 'Accessory', 'Herbal'], default: 'Saree', index: true },
+    material: { type: String, default: '' },
+    weight: { type: String, default: '' },
+    ingredients: { type: String, default: '' },
+    benefits: { type: String, default: '' },
+    usageInstructions: { type: String, default: '' },
+
     isFeatured: { type: Boolean, default: false },
     isNewArrival: { type: Boolean, default: false },
     isBestDeal: { type: Boolean, default: false },
@@ -76,6 +83,7 @@ const productSchema = new mongoose.Schema(
 
 productSchema.index({ title: 'text', description: 'text', fabric: 'text' });
 productSchema.index({ category: 1 });
+productSchema.index({ type: 1 });
 productSchema.index({ isFeatured: 1 });
 productSchema.index({ isNewArrival: 1 });
 productSchema.index({ isBestDeal: 1 });

@@ -4,14 +4,16 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   FiGrid, FiBox, FiShoppingBag, FiUsers, FiTag, FiList, FiLogOut, FiMenu, FiX, FiImage,
-  FiCheckSquare, FiSettings, FiInstagram,
+  FiCheckSquare, FiSettings, FiInstagram, FiLayers, FiDroplet,
 } from 'react-icons/fi';
 import { useState } from 'react';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 
 const NAV = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: FiGrid },
-  { href: '/admin/products', label: 'Products', icon: FiBox },
+  { href: '/admin/products', label: 'Sarees', icon: FiBox },
+  { href: '/admin/accessories', label: 'Accessories', icon: FiLayers },
+  { href: '/admin/herbal-products', label: 'Herbal Products', icon: FiDroplet },
   { href: '/admin/categories', label: 'Categories', icon: FiList },
   { href: '/admin/banners', label: 'Banners', icon: FiImage },
   { href: '/admin/orders', label: 'Orders', icon: FiShoppingBag },

@@ -15,7 +15,7 @@ const emptyVariant = () => ({
   sizes: [{ size: 'Free Size', stock: 0 }],
 });
 
-export default function ProductForm({ initialData = null, productId = null }) {
+export default function ProductForm({ initialData = null, productId = null, type = 'Saree' }) {
   const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [saving, setSaving] = useState(false);
@@ -32,15 +32,20 @@ export default function ProductForm({ initialData = null, productId = null }) {
     isFeatured: false,
     isNewArrival: false,
     isBestDeal: false,
+    material: '',
+    weight: '',
+    ingredients: '',
+    benefits: '',
+    usageInstructions: '',
   });
   const [variants, setVariants] = useState([emptyVariant()]);
   const [imageFiles, setImageFiles] = useState({}); // variantIndex -> File[]
 
   useEffect(() => {
-    adminApi.get('/admin/categories').then(({ data }) => {
+    adminApi.get(`/admin/categories?type=${type}`).then(({ data }) => {
       if (data.success) setCategories(data.categories);
     });
-  }, []);
+  }, [type]);
 
   useEffect(() => {
     if (initialData) {
@@ -56,6 +61,11 @@ export default function ProductForm({ initialData = null, productId = null }) {
         isFeatured: initialData.isFeatured || false,
         isNewArrival: initialData.isNewArrival || false,
         isBestDeal: initialData.isBestDeal || false,
+        material: initialData.material || '',
+        weight: initialData.weight || '',
+        ingredients: initialData.ingredients || '',
+        benefits: initialData.benefits || '',
+        usageInstructions: initialData.usageInstructions || '',
       });
       if (initialData.variants?.length) {
         setVariants(initialData.variants);
@@ -84,7 +94,7 @@ export default function ProductForm({ initialData = null, productId = null }) {
   const addSizeRow = (vIndex) => {
     setVariants((prev) => {
       const copy = [...prev];
-      copy[vIndex].sizes.push({ size: 'M', stock: 0 });
+      copy[vIndex].sizes.push({ size: 'Free Size', stock: 0 });
       return copy;
     });
   };
@@ -126,11 +136,9 @@ export default function ProductForm({ initialData = null, productId = null }) {
     try {
       const formData = new FormData();
       Object.entries(form).forEach(([k, v]) => formData.append(k, v));
+      formData.append('type', type);
       formData.append('variants', JSON.stringify(variants));
 
-      // Only attach files for the FIRST variant that has new uploads
-      // (Cloudinary upload via multer attaches to variants[0].images on backend;
-      // for multiple variants with separate images, admin can edit each variant's images one at a time)
       const firstVariantWithFiles = Object.keys(imageFiles)[0];
       if (firstVariantWithFiles !== undefined && imageFiles[firstVariantWithFiles]?.length) {
         imageFiles[firstVariantWithFiles].forEach((file) => formData.append('images', file));
@@ -149,7 +157,13 @@ export default function ProductForm({ initialData = null, productId = null }) {
 
       if (res.data.success) {
         toast.success(productId ? 'Product updated' : 'Product created');
-        router.push('/admin/products');
+        if (type === 'Accessory') {
+          router.push('/admin/accessories');
+        } else if (type === 'Herbal') {
+          router.push('/admin/herbal-products');
+        } else {
+          router.push('/admin/products');
+        }
       }
     } catch (err) {
       toast.error(err?.response?.data?.message || 'Could not save product');
@@ -158,22 +172,29 @@ export default function ProductForm({ initialData = null, productId = null }) {
     }
   };
 
+  const getCancelRedirect = () => {
+    if (type === 'Accessory') return '/admin/accessories';
+    if (type === 'Herbal') return '/admin/herbal-products';
+    return '/admin/products';
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl text-cream">
       <div className="card p-5 space-y-5">
-        <h2 className="text-cream font-medium mb-1">Basic Details</h2>
+        <h2 className="text-gold font-serif text-lg font-medium border-b border-gold/15 pb-2 mb-3">Basic Details</h2>
         <div>
           <label className="text-xs text-cream/70 font-medium block mb-2">Product Title *</label>
           <input required placeholder="Product Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="input-field" />
         </div>
         <div>
           <label className="text-xs text-cream/70 font-medium block mb-2">Product Code / SKU *</label>
-          <input required placeholder="Enter unique product code (e.g. CS001, CHS-0001)" value={form.productCode} onChange={(e) => setForm({ ...form, productCode: e.target.value })} className="input-field" />
+          <input required placeholder="Enter unique product code" value={form.productCode} onChange={(e) => setForm({ ...form, productCode: e.target.value })} className="input-field" />
         </div>
         <div>
           <label className="text-xs text-cream/70 font-medium block mb-2">Description</label>
           <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="input-field" rows={3} />
         </div>
+        
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="text-xs text-cream/70 font-medium block mb-2">Category *</label>
@@ -182,11 +203,50 @@ export default function ProductForm({ initialData = null, productId = null }) {
               {categories.map((c) => <option key={c._id} value={c._id}>{c.name}</option>)}
             </select>
           </div>
-          <div>
-            <label className="text-xs text-cream/70 font-medium block mb-2">Fabric</label>
-            <input placeholder="Fabric (e.g. Pure Silk)" value={form.fabric} onChange={(e) => setForm({ ...form, fabric: e.target.value })} className="input-field" />
-          </div>
+          {type === 'Saree' && (
+            <div>
+              <label className="text-xs text-cream/70 font-medium block mb-2">Fabric</label>
+              <input placeholder="Fabric (e.g. Pure Silk)" value={form.fabric} onChange={(e) => setForm({ ...form, fabric: e.target.value })} className="input-field" />
+            </div>
+          )}
+          {type === 'Accessory' && (
+            <div>
+              <label className="text-xs text-cream/70 font-medium block mb-2">Material</label>
+              <input placeholder="Material (e.g. Brass, Silver)" value={form.material} onChange={(e) => setForm({ ...form, material: e.target.value })} className="input-field" />
+            </div>
+          )}
+          {type === 'Herbal' && (
+            <div>
+              <label className="text-xs text-cream/70 font-medium block mb-2">Weight</label>
+              <input placeholder="Weight (e.g. 100g, 200ml)" value={form.weight} onChange={(e) => setForm({ ...form, weight: e.target.value })} className="input-field" />
+            </div>
+          )}
         </div>
+
+        {type === 'Accessory' && (
+          <div>
+            <label className="text-xs text-cream/70 font-medium block mb-2">Weight</label>
+            <input placeholder="Weight (e.g. 50g)" value={form.weight} onChange={(e) => setForm({ ...form, weight: e.target.value })} className="input-field" />
+          </div>
+        )}
+
+        {type === 'Herbal' && (
+          <div className="space-y-4">
+            <div>
+              <label className="text-xs text-cream/70 font-medium block mb-2">Ingredients</label>
+              <textarea placeholder="Ingredients (e.g. Aloe Vera, Neem, Sandalwood)" value={form.ingredients} onChange={(e) => setForm({ ...form, ingredients: e.target.value })} className="input-field" rows={2} />
+            </div>
+            <div>
+              <label className="text-xs text-cream/70 font-medium block mb-2">Benefits</label>
+              <textarea placeholder="Benefits (e.g. Radiant Skin, Deep Cleansing)" value={form.benefits} onChange={(e) => setForm({ ...form, benefits: e.target.value })} className="input-field" rows={2} />
+            </div>
+            <div>
+              <label className="text-xs text-cream/70 font-medium block mb-2">Usage Instructions</label>
+              <textarea placeholder="Usage Instructions" value={form.usageInstructions} onChange={(e) => setForm({ ...form, usageInstructions: e.target.value })} className="input-field" rows={2} />
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="text-xs text-cream/70 font-medium block mb-2">MRP (₹) *</label>
@@ -197,23 +257,26 @@ export default function ProductForm({ initialData = null, productId = null }) {
             <input required type="number" placeholder="Selling Price (₹)" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="input-field" />
           </div>
         </div>
-        <div>
-          <label className="text-xs text-cream/70 font-medium block mb-2">Care Instructions</label>
-          <textarea placeholder="Care Instructions" value={form.careInstructions} onChange={(e) => setForm({ ...form, careInstructions: e.target.value })} className="input-field" rows={2} />
-        </div>
+        
+        {type !== 'Herbal' && (
+          <div>
+            <label className="text-xs text-cream/70 font-medium block mb-2">Care Instructions</label>
+            <textarea placeholder="Care Instructions" value={form.careInstructions} onChange={(e) => setForm({ ...form, careInstructions: e.target.value })} className="input-field" rows={2} />
+          </div>
+        )}
 
         <div className="flex gap-4 flex-wrap">
           {[
             { key: 'isFeatured', label: 'Featured' },
             { key: 'isNewArrival', label: 'New Arrival' },
-            { key: 'isBestDeal', label: 'Best Deal' },
+            { key: 'isBestDeal', label: 'Best Seller' },
           ].map((opt) => (
-            <label key={opt.key} className="flex items-center gap-2 text-cream/80 text-sm">
+            <label key={opt.key} className="flex items-center gap-2 text-cream/80 text-sm cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={form[opt.key]}
                 onChange={(e) => setForm({ ...form, [opt.key]: e.target.checked })}
-                className="accent-gold"
+                className="w-4 h-4 rounded border-gold/30 bg-maroon-dark text-gold focus:ring-0"
               />
               {opt.label}
             </label>
@@ -223,7 +286,7 @@ export default function ProductForm({ initialData = null, productId = null }) {
 
       <div className="card p-5">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-cream font-medium">Color Variants</h2>
+          <h2 className="text-gold font-serif text-lg font-medium">Color Variants</h2>
           <button type="button" onClick={addVariant} className="text-gold text-sm flex items-center gap-1">
             <FiPlus /> Add Color
           </button>
@@ -253,7 +316,7 @@ export default function ProductForm({ initialData = null, productId = null }) {
                   type="color"
                   value={variant.colorHex}
                   onChange={(e) => updateVariant(vIndex, 'colorHex', e.target.value)}
-                  className="h-12 rounded-lg border border-gold/30 bg-transparent"
+                  className="h-12 w-full rounded-lg border border-gold/30 bg-transparent cursor-pointer"
                 />
               </div>
 
@@ -272,7 +335,7 @@ export default function ProductForm({ initialData = null, productId = null }) {
                 {variant.images?.length > 0 && (
                   <div className="flex gap-2 mt-2">
                     {variant.images.map((img, i) => (
-                      <img key={i} src={img.url} alt="" className="w-12 h-14 object-cover rounded" />
+                      <img key={i} src={img.url} alt="" className="w-12 h-14 object-cover rounded border border-gold/10" />
                     ))}
                   </div>
                 )}
@@ -317,8 +380,8 @@ export default function ProductForm({ initialData = null, productId = null }) {
       </div>
 
       <div className="flex gap-3">
-        <button type="button" onClick={() => router.push('/admin/products')} className="btn-secondary flex-1">Cancel</button>
-        <button type="submit" disabled={saving} className="btn-primary flex-1">
+        <button type="button" onClick={() => router.push(getCancelRedirect())} className="btn-secondary flex-1 py-2.5">Cancel</button>
+        <button type="submit" disabled={saving} className="btn-primary flex-1 py-2.5">
           {saving ? 'Saving...' : productId ? 'Update Product' : 'Create Product'}
         </button>
       </div>
