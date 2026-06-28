@@ -46,23 +46,23 @@ function BannerCarousel() {
 
   if (loading) {
     return (
-      <div className="h-[380px] sm:h-[420px] md:h-[450px] w-full bg-maroon/20 rounded-2xl animate-pulse flex items-center justify-center border border-gold/15 mb-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-gold"></div>
+      <div className="-mx-4 w-[calc(100%+32px)] md:w-full md:mx-0 h-[200px] sm:h-[260px] md:h-[400px] lg:h-[450px] bg-maroon/20 rounded-none md:rounded-2xl animate-pulse flex items-center justify-center border border-gold/15 mb-8">
+        <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-t-2 border-gold"></div>
       </div>
     );
   }
 
   if (banners.length === 0) {
     return (
-      <section className="relative rounded-2xl overflow-hidden mb-8 bg-gradient-to-r from-maroon-dark to-maroon h-[380px] sm:h-[420px] md:h-[450px] flex items-center px-6 md:px-16 border border-gold/15 shadow-2xl">
-        <div className="relative z-10 max-w-md space-y-4">
-          <span className="bg-gold text-maroon-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">WELCOME</span>
-          <h1 className="font-serif text-3xl md:text-5xl text-cream font-bold leading-tight">
+      <section className="relative -mx-4 w-[calc(100%+32px)] md:w-full md:mx-0 rounded-none md:rounded-2xl overflow-hidden mb-8 bg-gradient-to-r from-maroon-dark to-maroon h-[200px] sm:h-[260px] md:h-[400px] lg:h-[450px] flex items-center px-4 sm:px-12 md:px-16 border-x-0 md:border border-gold/15 shadow-2xl">
+        <div className="relative z-10 max-w-xs sm:max-w-md space-y-2 sm:space-y-4">
+          <span className="bg-gold text-maroon-dark text-[8px] sm:text-xs font-bold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider shadow-sm">WELCOME</span>
+          <h1 className="font-serif text-lg sm:text-3xl md:text-5xl text-cream font-bold leading-tight">
             Charithra Silks
           </h1>
-          <p className="text-gold text-base md:text-xl font-medium tracking-wide">Timeless Weaves, Eternal Elegance</p>
-          <Link href="/categories" className="btn-primary inline-flex mt-2">
-            Explore Collection <FiChevronRight className="text-base" />
+          <p className="text-gold text-xs sm:text-xl font-medium tracking-wide">Timeless Weaves, Eternal Elegance</p>
+          <Link href="/categories" className="btn-primary py-1.5 px-3 sm:py-2.5 sm:px-5 text-[9px] sm:text-xs inline-flex mt-1">
+            Explore Collection <FiChevronRight className="text-xs sm:text-base" />
           </Link>
         </div>
       </section>
@@ -70,7 +70,7 @@ function BannerCarousel() {
   }
 
   return (
-    <section className="relative rounded-2xl overflow-hidden mb-8 h-[380px] sm:h-[420px] md:h-[450px] group border border-gold/20 shadow-2xl bg-[#1c0408]">
+    <section className="relative -mx-4 w-[calc(100%+32px)] md:w-full md:mx-0 rounded-none md:rounded-2xl overflow-hidden mb-8 h-[200px] sm:h-[260px] md:h-[400px] lg:h-[450px] group border-x-0 md:border border-gold/20 shadow-2xl bg-[#1c0408]">
       {/* Slides */}
       <div className="relative w-full h-full">
         {banners.map((b, i) => (
@@ -90,24 +90,27 @@ function BannerCarousel() {
                 />
               )}
               {/* Left-leaning dark gradient overlay to ensure text readability */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent z-10"></div>
             </div>
 
             {/* Text details container (layered on top) */}
-            <div className="absolute inset-0 flex items-center px-6 sm:px-12 md:px-20 z-20 text-left">
-              <div className="space-y-3 sm:space-y-4 max-w-sm sm:max-w-md md:max-w-xl">
-                <span className="inline-block bg-gold/20 text-gold text-[10px] md:text-xs font-bold px-3 py-1 rounded-full border border-gold/30 tracking-wider uppercase shadow-sm">
+            <div className="absolute inset-0 flex items-center px-4 sm:px-12 md:px-20 z-20 text-left">
+              <div className="space-y-1.5 sm:space-y-3.5 max-w-[60vw] sm:max-w-md md:max-w-xl">
+                <span className="inline-block bg-gold/20 text-gold text-[8px] sm:text-[10px] md:text-xs font-bold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full border border-gold/30 tracking-wider uppercase shadow-sm">
                   {b.subtitle || 'NEW COLLECTION'}
                 </span>
-                <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl text-cream font-extrabold leading-tight drop-shadow-md">
+                <h2 className="font-serif text-base sm:text-3xl md:text-4xl lg:text-5xl text-cream font-extrabold leading-tight drop-shadow-md">
                   {b.title || 'Timeless Weaves, Eternal Elegance'}
                 </h2>
-                <p className="text-cream/90 text-xs sm:text-sm md:text-base font-sans line-clamp-2 leading-relaxed max-w-lg drop-shadow">
+                <p className="text-cream/90 text-[10px] sm:text-xs md:text-sm lg:text-base font-sans line-clamp-2 leading-relaxed max-w-lg drop-shadow">
                   Discover the finest handcrafted sarees crafted for every special moment.
                 </p>
-                <div className="pt-2">
-                  <Link href={b.link || '/categories'} className="btn-primary inline-flex text-xs md:text-sm">
-                    Explore Collection <FiChevronRight className="text-base group-hover:translate-x-1 transition-transform" />
+                <div className="pt-1">
+                  <Link 
+                    href={b.link || '/categories'} 
+                    className="bg-gold text-maroon-dark font-semibold py-1.5 px-3 sm:py-2.5 sm:px-5 rounded-full text-[9px] sm:text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:bg-gold-light hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] active:scale-95 shadow-md w-max"
+                  >
+                    Explore Collection <FiChevronRight className="text-xs sm:text-sm group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </div>
@@ -121,25 +124,25 @@ function BannerCarousel() {
         <>
           <button
             onClick={handlePrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-maroon-dark/70 hover:bg-gold hover:text-maroon-dark text-gold p-2 rounded-full z-20 opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg border border-gold/10"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-maroon-dark/70 hover:bg-gold hover:text-maroon-dark text-gold p-2 rounded-full z-20 opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg border border-gold/10 hidden sm:block"
           >
             <FiChevronLeft className="text-lg" />
           </button>
           <button
             onClick={handleNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-maroon-dark/70 hover:bg-gold hover:text-maroon-dark text-gold p-2 rounded-full z-20 opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg border border-gold/10"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-maroon-dark/70 hover:bg-gold hover:text-maroon-dark text-gold p-2 rounded-full z-20 opacity-0 group-hover:opacity-100 transition duration-300 shadow-lg border border-gold/10 hidden sm:block"
           >
             <FiChevronRight className="text-lg" />
           </button>
 
           {/* Pill Indicators - Left Aligned to match screenshot */}
-          <div className="absolute bottom-6 left-6 sm:left-12 md:left-20 flex justify-start gap-1.5 z-20">
+          <div className="absolute bottom-2.5 left-4 sm:bottom-6 sm:left-12 md:left-20 flex justify-start gap-1 z-20">
             {banners.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIdx(i)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === activeIdx ? 'bg-gold w-6 shadow-[0_0_8px_rgba(212,175,55,0.8)]' : 'bg-gold/30 w-2'
+                  i === activeIdx ? 'bg-gold w-5 shadow-[0_0_8px_rgba(212,175,55,0.8)]' : 'bg-gold/30 w-1.5'
                 }`}
               />
             ))}
