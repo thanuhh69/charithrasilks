@@ -83,7 +83,7 @@ function OrderDetailContent() {
         <div className="flex justify-between text-cream/70"><span>Total MRP</span><span>₹{order.totalMRP.toLocaleString('en-IN')}</span></div>
         <div className="flex justify-between text-cream/70"><span>Discount</span><span className="text-green-400">-₹{order.discountOnMRP.toLocaleString('en-IN')}</span></div>
         {order.couponDiscount > 0 && <div className="flex justify-between text-cream/70"><span>Coupon ({order.couponCode})</span><span className="text-green-400">-₹{order.couponDiscount.toLocaleString('en-IN')}</span></div>}
-        <div className="flex justify-between text-cream/70"><span>Shipping</span><span>{order.shippingCharges === 0 ? 'FREE' : `₹${order.shippingCharges}`}</span></div>
+        <div className="flex justify-between text-cream/70"><span>Shipping Charges</span><span>₹{order.shippingCharges}</span></div>
         <div className="border-t border-gold/20 pt-2 flex justify-between text-cream font-bold"><span>Total Amount</span><span>₹{order.totalAmount.toLocaleString('en-IN')}</span></div>
         <div className="flex justify-between text-cream/50 text-xs pt-2"><span>Payment Method</span><span>{order.paymentMethod}</span></div>
         <div className="flex justify-between text-cream/50 text-xs"><span>Payment Status</span><span>{order.paymentStatus}</span></div>

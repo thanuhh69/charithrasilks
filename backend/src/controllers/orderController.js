@@ -6,8 +6,7 @@ const Coupon = require('../models/Coupon');
 const { buildCartResponse } = require('./cartController');
 const { getRazorpayInstance } = require('../config/razorpay');
 
-const SHIPPING_CHARGE_THRESHOLD = 999; // free shipping above this amount
-const SHIPPING_FLAT_RATE = 99;
+const SHIPPING_FLAT_RATE = 100;
 
 // ============ USER SIDE ============
 
@@ -30,8 +29,7 @@ const createRazorpayOrder = async (req, res) => {
     }
 
     const cartData = await buildCartResponse(cart);
-    const shippingCharges =
-      cartData.summary.totalAmount >= SHIPPING_CHARGE_THRESHOLD ? 0 : SHIPPING_FLAT_RATE;
+    const shippingCharges = SHIPPING_FLAT_RATE;
     const amountInPaise = Math.round((cartData.summary.totalAmount + shippingCharges) * 100);
 
     const razorpayOrder = await razorpay.orders.create({
@@ -134,7 +132,7 @@ const placeOrder = async (req, res) => {
     }
 
     const discountOnMRP = totalMRP - totalAmount;
-    const shippingCharges = totalAmount >= SHIPPING_CHARGE_THRESHOLD ? 0 : SHIPPING_FLAT_RATE;
+    const shippingCharges = SHIPPING_FLAT_RATE;
     const finalAmount = totalAmount - couponDiscount + shippingCharges;
 
     let orderNumber;

@@ -43,7 +43,7 @@ function PaymentContent() {
       });
   }, []);
 
-  const shipping = cart.summary.totalAmount >= 999 ? 0 : 99;
+  const shipping = 100;
   const total = cart.summary.totalAmount + shipping;
 
   const placeOrderDirect = async () => {
@@ -82,7 +82,7 @@ function PaymentContent() {
         <h2 className="text-cream font-medium mb-2">Order Summary</h2>
         <div className="flex justify-between text-cream/70"><span>Total MRP</span><span>₹{cart.summary.totalMRP.toLocaleString('en-IN')}</span></div>
         <div className="flex justify-between text-cream/70"><span>Discount on MRP</span><span className="text-green-400">-₹{cart.summary.discountOnMRP.toLocaleString('en-IN')}</span></div>
-        <div className="flex justify-between text-cream/70"><span>Shipping Charges</span><span className={shipping === 0 ? 'text-green-400' : ''}>{shipping === 0 ? 'FREE' : `₹${shipping}`}</span></div>
+        <div className="flex justify-between text-cream/70"><span>Shipping Charges</span><span>₹{shipping}</span></div>
         <div className="border-t border-gold/20 pt-2 flex justify-between text-cream font-bold"><span>Total Amount</span><span>₹{total.toLocaleString('en-IN')}</span></div>
       </div>
 

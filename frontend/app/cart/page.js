@@ -33,7 +33,7 @@ export default function CartPage() {
     }
   };
 
-  const shipping = cart.summary.totalAmount >= 999 ? 0 : 99;
+  const shipping = 100;
   const finalTotal = cart.summary.totalAmount - couponDiscount + shipping;
 
   return (
@@ -121,7 +121,7 @@ export default function CartPage() {
                 )}
                 <div className="flex justify-between text-cream/70">
                   <span>Shipping Charges</span>
-                  <span className={shipping === 0 ? 'text-green-400' : ''}>{shipping === 0 ? 'FREE' : `₹${shipping}`}</span>
+                  <span>₹{shipping}</span>
                 </div>
                 <div className="border-t border-gold/20 pt-2 flex justify-between text-cream font-bold text-base">
                   <span>Total Amount</span>
