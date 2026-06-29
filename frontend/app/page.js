@@ -425,7 +425,7 @@ export default function HomePage() {
                 <div className="pt-2">
                   <p className="text-sm text-cream/70">❤️ With Love,</p>
                   <p className="font-serif text-lg text-[#D4AF37] italic mt-1 font-bold">
-                    Charithra Silks
+                    Geetha Reddy
                   </p>
                   <p className="text-xs text-[#F5E6C8]">Founder & Curator</p>
                 </div>
