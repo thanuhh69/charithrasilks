@@ -55,9 +55,12 @@ function BannerCarousel() {
 
   if (banners.length === 0) {
     return (
-      <section className="relative -mx-4 w-[calc(100%+32px)] md:w-full md:mx-0 rounded-none md:rounded-2xl overflow-hidden mb-8 bg-gradient-to-r from-maroon-dark to-maroon h-[200px] sm:h-[260px] md:h-[400px] lg:h-[450px] flex items-center px-4 sm:px-12 md:px-16 border-x-0 md:border border-gold/15 shadow-2xl">
-        <div className="relative z-10 max-w-xs sm:max-w-md">
-          <Link href="/categories" className="btn-primary py-1.5 px-3 sm:py-2.5 sm:px-5 text-[9px] sm:text-xs inline-flex mt-1">
+      <section className="relative -mx-4 w-[calc(100%+32px)] md:w-full md:mx-0 rounded-none md:rounded-2xl overflow-hidden mb-8 bg-gradient-to-r from-maroon-dark to-maroon h-[200px] sm:h-[260px] md:h-[400px] lg:h-[450px] border-x-0 md:border border-gold/15 shadow-2xl">
+        <div className="absolute bottom-[25px] left-[20px] sm:bottom-[35px] sm:left-[30px] z-20">
+          <Link 
+            href="/categories" 
+            className="bg-[#E8C24A] text-black font-semibold py-1.5 px-3 sm:py-2.5 sm:px-5 rounded-full text-[9px] sm:text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:bg-[#f3d266] hover:shadow-[0_0_15px_rgba(232,194,74,0.4)] active:scale-95 shadow-[0_4px_12px_rgba(0,0,0,0.35)] w-max"
+          >
             Explore Collection <FiChevronRight className="text-xs sm:text-base" />
           </Link>
         </div>
@@ -85,15 +88,13 @@ function BannerCarousel() {
                   className="w-full h-full object-cover object-right md:object-right-top" 
                 />
               )}
-              {/* Left-leaning dark gradient overlay to ensure text readability */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent z-10"></div>
             </div>
 
             {/* Text details container (layered on top) */}
-            <div className="absolute inset-0 flex items-center px-4 sm:px-12 md:px-20 z-20 text-left">
+            <div className="absolute bottom-[25px] left-[20px] sm:bottom-[35px] sm:left-[30px] z-20">
               <Link 
                 href={b.link || '/categories'} 
-                className="bg-gold text-maroon-dark font-semibold py-1.5 px-3 sm:py-2.5 sm:px-5 rounded-full text-[9px] sm:text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:bg-gold-light hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] active:scale-95 shadow-md w-max"
+                className="bg-[#E8C24A] text-black font-semibold py-1.5 px-3 sm:py-2.5 sm:px-5 rounded-full text-[9px] sm:text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:bg-[#f3d266] hover:shadow-[0_0_15px_rgba(232,194,74,0.4)] active:scale-95 shadow-[0_4px_12px_rgba(0,0,0,0.35)] w-max"
               >
                 Explore Collection <FiChevronRight className="text-xs sm:text-sm group-hover:translate-x-1 transition-transform" />
               </Link>
