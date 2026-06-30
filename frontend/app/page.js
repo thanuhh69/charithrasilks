@@ -56,12 +56,7 @@ function BannerCarousel() {
   if (banners.length === 0) {
     return (
       <section className="relative -mx-4 w-[calc(100%+32px)] md:w-full md:mx-0 rounded-none md:rounded-2xl overflow-hidden mb-8 bg-gradient-to-r from-maroon-dark to-maroon h-[200px] sm:h-[260px] md:h-[400px] lg:h-[450px] flex items-center px-4 sm:px-12 md:px-16 border-x-0 md:border border-gold/15 shadow-2xl">
-        <div className="relative z-10 max-w-xs sm:max-w-md space-y-2 sm:space-y-4">
-          <span className="bg-gold text-maroon-dark text-[8px] sm:text-xs font-bold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider shadow-sm">WELCOME</span>
-          <h1 className="font-serif text-lg sm:text-3xl md:text-5xl text-cream font-bold leading-tight">
-            Charithra Silks
-          </h1>
-          <p className="text-gold text-xs sm:text-xl font-medium tracking-wide">Timeless Weaves, Eternal Elegance</p>
+        <div className="relative z-10 max-w-xs sm:max-w-md">
           <Link href="/categories" className="btn-primary py-1.5 px-3 sm:py-2.5 sm:px-5 text-[9px] sm:text-xs inline-flex mt-1">
             Explore Collection <FiChevronRight className="text-xs sm:text-base" />
           </Link>
@@ -96,25 +91,12 @@ function BannerCarousel() {
 
             {/* Text details container (layered on top) */}
             <div className="absolute inset-0 flex items-center px-4 sm:px-12 md:px-20 z-20 text-left">
-              <div className="space-y-1.5 sm:space-y-3.5 max-w-[60vw] sm:max-w-md md:max-w-xl">
-                <span className="inline-block bg-gold/20 text-gold text-[8px] sm:text-[10px] md:text-xs font-bold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full border border-gold/30 tracking-wider uppercase shadow-sm">
-                  {b.subtitle || 'NEW COLLECTION'}
-                </span>
-                <h2 className="font-serif text-base sm:text-3xl md:text-4xl lg:text-5xl text-cream font-extrabold leading-tight drop-shadow-md">
-                  {b.title || 'Timeless Weaves, Eternal Elegance'}
-                </h2>
-                <p className="text-cream/90 text-[10px] sm:text-xs md:text-sm lg:text-base font-sans line-clamp-2 leading-relaxed max-w-lg drop-shadow">
-                  Discover the finest handcrafted sarees crafted for every special moment.
-                </p>
-                <div className="pt-1">
-                  <Link 
-                    href={b.link || '/categories'} 
-                    className="bg-gold text-maroon-dark font-semibold py-1.5 px-3 sm:py-2.5 sm:px-5 rounded-full text-[9px] sm:text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:bg-gold-light hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] active:scale-95 shadow-md w-max"
-                  >
-                    Explore Collection <FiChevronRight className="text-xs sm:text-sm group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </div>
+              <Link 
+                href={b.link || '/categories'} 
+                className="bg-gold text-maroon-dark font-semibold py-1.5 px-3 sm:py-2.5 sm:px-5 rounded-full text-[9px] sm:text-xs flex items-center justify-center gap-1 transition-all duration-300 hover:bg-gold-light hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] active:scale-95 shadow-md w-max"
+              >
+                Explore Collection <FiChevronRight className="text-xs sm:text-sm group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </div>
         ))}
@@ -354,15 +336,13 @@ export default function HomePage() {
               <h2 className="font-serif text-xl md:text-2xl text-cream font-semibold">Best Deals</h2>
               <Link href="/category/best-deals" className="text-gold text-sm hover:underline flex items-center gap-1">View All &rarr;</Link>
             </div>
-            <div className="flex overflow-x-auto gap-3 sm:gap-4 pb-4 scrollbar-none snap-x snap-mandatory scroll-smooth touch-pan-x">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {loading
                 ? Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="card aspect-[3/4] w-[42vw] sm:w-[28vw] md:w-[240px] flex-shrink-0 animate-pulse bg-maroon/40" />
+                    <div key={i} className="card aspect-[3/4] w-full animate-pulse bg-maroon/40" />
                   ))
                 : bestDeals.map((p) => (
-                    <div key={p._id} className="w-[42vw] sm:w-[28vw] md:w-[240px] flex-shrink-0 snap-start">
-                      <ProductCard product={p} />
-                    </div>
+                    <ProductCard key={p._id} product={p} />
                   ))}
             </div>
           </section>
