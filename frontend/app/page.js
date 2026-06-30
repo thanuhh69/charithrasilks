@@ -368,95 +368,111 @@ export default function HomePage() {
           </section>
 
           {/* ================= PREMIUM "OUR STORY" SECTION ================= */}
-          <section className="mb-16 relative overflow-hidden bg-[#3B0614] text-[#FFF8F0] z-10 max-w-4xl mx-auto py-10 px-4 md:px-8 border border-[#D4AF37]/15 rounded-2xl shadow-2xl">
-            {/* Subtle background glow effect & glowing particles */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.03)_0%,transparent_70%)] pointer-events-none" />
-            <div className="absolute top-[15%] right-[8%] w-1.5 h-1.5 rounded-full bg-[#D4AF37] opacity-20 blur-[1px] animate-pulse pointer-events-none" />
-            <div className="absolute bottom-[25%] left-[6%] w-1 h-1 rounded-full bg-[#D4AF37] opacity-35 blur-[1px] animate-pulse pointer-events-none" />
+          <section className="mb-16 relative overflow-hidden bg-[#3B0614] text-cream z-10 max-w-5xl mx-auto py-12 px-6 md:px-10 border border-gold/15 rounded-2xl shadow-2xl">
+            {/* Subtle background glow effect */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.04)_0%,transparent_70%)] pointer-events-none" />
             
-            {/* Corner Floral Ornaments */}
-            <div className="absolute top-3 left-3 text-[#D4AF37]/45 text-[10px] select-none pointer-events-none font-serif">✦</div>
-            <div className="absolute top-3 right-3 text-[#D4AF37]/45 text-[10px] select-none pointer-events-none font-serif">✦</div>
-            <div className="absolute bottom-3 left-3 text-[#D4AF37]/45 text-[10px] select-none pointer-events-none font-serif">✦</div>
-            <div className="absolute bottom-3 right-3 text-[#D4AF37]/45 text-[10px] select-none pointer-events-none font-serif">✦</div>
-
-            {/* Header row */}
-            <div className="mb-6 border-b border-[#D4AF37]/15 pb-4 flex justify-between items-end">
-              <div>
-                <span className="text-[10px] tracking-[0.25em] text-[#D4AF37] font-semibold uppercase block">
-                  OUR STORY
-                </span>
-                <span className="text-xs text-[#F5E6C8] font-serif block italic mt-0.5">
-                  Tradition • Trust • Elegance
-                </span>
-              </div>
-              <div className="hidden sm:block text-right">
-                <span className="text-[10px] text-[#D4AF37]/40 tracking-[0.2em] font-serif uppercase">Heritage & Trust</span>
-              </div>
-            </div>
-
-            <div className="flow-root">
-              {/* Left Side: Floating Portrait Image & Quote */}
-              <div className="float-left w-[130px] md:w-[240px] mr-4 md:mr-6 mb-4 text-center">
-                <div className="relative w-full aspect-[3/4] rounded-[18px] overflow-hidden border border-[#D4AF37]/60 shadow-lg mb-2.5">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+              {/* Left Side: Portrait Image & Quote */}
+              <div className="md:col-span-5 flex flex-col items-center text-center space-y-4">
+                <div className="relative w-full max-w-[280px] aspect-[3/4] rounded-[20px] overflow-hidden border border-[#D4AF37] shadow-xl group">
                   <img
                     src="https://res.cloudinary.com/dvhbkghjx/image/upload/f_auto,q_auto/1000231743_gbt2xc"
-                    alt="Geetha Reddy"
+                    alt="Founder & Curator"
                     className="w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-105"
                     loading="lazy"
                   />
                 </div>
-                <p className="text-[#D4AF37] italic font-serif text-[10px] md:text-xs leading-relaxed max-w-[130px] md:max-w-none mx-auto pt-1 px-1">
+                <p className="text-[#D4AF37] italic font-serif text-sm max-w-[260px] leading-relaxed">
                   "Every saree is chosen with love, because every woman deserves the best."
                 </p>
-                {/* Small decorative divider below the quote */}
-                <div className="w-8 h-[1px] bg-[#D4AF37]/45 mx-auto mt-2.5 mb-1" />
               </div>
 
-              {/* Main Narrative Text */}
-              <div className="text-[#FFF8F0] font-serif text-[15px] md:text-[16px] leading-[1.75] tracking-wide text-left">
-                {/* Heading inside main text to wrap next to image */}
-                <div className="border-t border-b border-[#D4AF37]/25 py-2.5 mb-4">
-                  <span className="text-[10px] tracking-[0.25em] text-[#D4AF37] font-semibold uppercase block">
-                    THE HEART BEHIND
+              {/* Right Side: Narrative Text */}
+              <div className="md:col-span-7 space-y-5 text-center md:text-left">
+                <div className="space-y-1">
+                  <span className="text-[11px] tracking-[0.25em] text-[#D4AF37] font-semibold uppercase block">
+                    OUR STORY
                   </span>
-                  <h2 className="font-serif text-lg md:text-2xl text-[#D4AF37] font-bold tracking-wide mt-0.5">
-                    CHARITHRA SILKS
-                  </h2>
+                  <span className="text-xs text-[#F5E6C8] font-serif block italic">
+                    Tradition • Trust • Elegance
+                  </span>
                 </div>
                 
-                <p className="mb-4">
-                  Our journey began with a simple vision—to bring timeless Indian elegance closer to every woman.
-                </p>
-                <p className="mb-4">
-                  Every saree in our collection is carefully selected with love, focusing on authenticity, craftsmanship, premium quality, and graceful designs.
-                </p>
-                <p className="mb-4">
-                  From traditional Banarasi silks to modern festive collections, every product reflects heritage while embracing contemporary elegance.
-                </p>
-                <p className="mb-4">
-                  We believe a saree is more than clothing—it's a symbol of tradition, confidence, celebration, and cherished memories.
-                </p>
-                <p className="mb-6">
-                  Our mission is to make premium sarees accessible while preserving the rich legacy of Indian craftsmanship.
-                </p>
+                <h2 className="font-serif text-2xl md:text-3xl text-cream font-bold tracking-wide leading-tight">
+                  The Heart Behind Our Brand
+                </h2>
+
+                <div className="space-y-4 text-cream/90 text-sm md:text-base leading-relaxed font-serif text-justify md:text-left">
+                  <p>
+                    Our journey began with a simple vision—to bring timeless Indian elegance closer to every woman.
+                  </p>
+                  <p>
+                    Every saree in our collection is carefully selected with love, focusing on authenticity, craftsmanship, premium quality, and graceful designs.
+                  </p>
+                  <p>
+                    From traditional Banarasi silks to modern festive collections, every product reflects heritage while embracing contemporary elegance.
+                  </p>
+                  <p>
+                    We believe a saree is more than clothing—it's a symbol of tradition, confidence, celebration, and cherished memories.
+                  </p>
+                  <p>
+                    Our mission is to make premium sarees accessible while preserving the rich legacy of Indian craftsmanship.
+                  </p>
+                </div>
 
                 {/* Signature Area */}
-                <div className="pt-2 clear-none space-y-1">
-                  <p className="text-xs text-cream/70">❤️ With Love,</p>
-                  <p 
-                    className="text-lg md:text-xl text-[#D4AF37] italic font-bold tracking-wide mt-0.5"
-                    style={{ fontFamily: "'Dancing Script', 'Brush Script MT', 'Great Vibes', cursive" }}
-                  >
+                <div className="pt-2">
+                  <p className="text-sm text-cream/70">❤️ With Love,</p>
+                  <p className="font-serif text-lg text-[#D4AF37] italic mt-1 font-bold">
                     Geetha Reddy
                   </p>
-                  <p className="text-[11px] md:text-xs text-[#F5E6C8]">Founder & Curator</p>
+                  <p className="text-xs text-[#F5E6C8]">Founder & Curator</p>
                 </div>
               </div>
             </div>
 
+            {/* Premium feature divider */}
+            <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent my-10" />
+
+            {/* Bottom Feature Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Card 1 */}
+              <div className="card p-5 border border-gold/15 bg-[#290d11]/20 hover:border-gold/45 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-center space-y-2 flex flex-col items-center rounded-xl">
+                <span className="text-xl text-[#D4AF37]">❤️</span>
+                <h3 className="font-serif text-[#D4AF37] text-sm font-semibold uppercase tracking-wider">
+                  Personally Handpicked
+                </h3>
+                <p className="text-cream/80 text-xs leading-relaxed">
+                  Each saree is carefully selected with love to ensure uniqueness and exceptional quality.
+                </p>
+              </div>
+
+              {/* Card 2 */}
+              <div className="card p-5 border border-gold/15 bg-[#290d11]/20 hover:border-gold/45 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-center space-y-2 flex flex-col items-center rounded-xl">
+                <span className="text-xl text-[#D4AF37]">🏅</span>
+                <h3 className="font-serif text-[#D4AF37] text-sm font-semibold uppercase tracking-wider">
+                  Premium Quality
+                </h3>
+                <p className="text-cream/80 text-xs leading-relaxed">
+                  Authentic fabrics, premium weaving, excellent craftsmanship, and lasting elegance.
+                </p>
+              </div>
+
+              {/* Card 3 */}
+              <div className="card p-5 border border-gold/15 bg-[#290d11]/20 hover:border-gold/45 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-center space-y-2 flex flex-col items-center rounded-xl">
+                <span className="text-xl text-[#D4AF37]">🚚</span>
+                <h3 className="font-serif text-[#D4AF37] text-sm font-semibold uppercase tracking-wider">
+                  Delivered Across India
+                </h3>
+                <p className="text-cream/80 text-xs leading-relaxed">
+                  Secure packaging and reliable delivery to bring elegance directly to your doorstep.
+                </p>
+              </div>
+            </div>
+
             {/* Bottom Quote with divider */}
-            <div className="mt-8 pt-6 border-t border-[#D4AF37]/15 text-center max-w-xl mx-auto space-y-2">
+            <div className="mt-10 pt-6 border-t border-[rgba(212,175,55,0.15)] text-center max-w-xl mx-auto space-y-2">
               <p className="text-cream/80 text-xs md:text-sm italic font-serif leading-relaxed">
                 "A saree is not just what you wear, it's how you carry tradition, beauty and confidence."
               </p>
