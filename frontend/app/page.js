@@ -368,12 +368,20 @@ export default function HomePage() {
           </section>
 
           {/* ================= PREMIUM "OUR STORY" SECTION ================= */}
-          <section className="mb-16 relative overflow-hidden bg-[#3B0614] text-cream z-10 max-w-4xl mx-auto py-10 px-4 md:px-8 border border-gold/15 rounded-2xl shadow-2xl">
-            {/* Subtle background glow effect */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.04)_0%,transparent_70%)] pointer-events-none" />
+          <section className="mb-16 relative overflow-hidden bg-[#3B0614] text-[#FFF8F0] z-10 max-w-4xl mx-auto py-10 px-4 md:px-8 border border-[#D4AF37]/15 rounded-2xl shadow-2xl">
+            {/* Subtle background glow effect & glowing particles */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.03)_0%,transparent_70%)] pointer-events-none" />
+            <div className="absolute top-[15%] right-[8%] w-1.5 h-1.5 rounded-full bg-[#D4AF37] opacity-20 blur-[1px] animate-pulse pointer-events-none" />
+            <div className="absolute bottom-[25%] left-[6%] w-1 h-1 rounded-full bg-[#D4AF37] opacity-35 blur-[1px] animate-pulse pointer-events-none" />
             
-            {/* Heading row */}
-            <div className="mb-6 border-b border-[rgba(212,175,55,0.15)] pb-4 flex justify-between items-end">
+            {/* Corner Floral Ornaments */}
+            <div className="absolute top-3 left-3 text-[#D4AF37]/45 text-[10px] select-none pointer-events-none font-serif">✦</div>
+            <div className="absolute top-3 right-3 text-[#D4AF37]/45 text-[10px] select-none pointer-events-none font-serif">✦</div>
+            <div className="absolute bottom-3 left-3 text-[#D4AF37]/45 text-[10px] select-none pointer-events-none font-serif">✦</div>
+            <div className="absolute bottom-3 right-3 text-[#D4AF37]/45 text-[10px] select-none pointer-events-none font-serif">✦</div>
+
+            {/* Header row */}
+            <div className="mb-6 border-b border-[#D4AF37]/15 pb-4 flex justify-between items-end">
               <div>
                 <span className="text-[10px] tracking-[0.25em] text-[#D4AF37] font-semibold uppercase block">
                   OUR STORY
@@ -383,14 +391,14 @@ export default function HomePage() {
                 </span>
               </div>
               <div className="hidden sm:block text-right">
-                <span className="text-[10px] text-gold/40 tracking-[0.2em] font-serif uppercase">Heritage & Trust</span>
+                <span className="text-[10px] text-[#D4AF37]/40 tracking-[0.2em] font-serif uppercase">Heritage & Trust</span>
               </div>
             </div>
 
             <div className="flow-root">
               {/* Left Side: Floating Portrait Image & Quote */}
-              <div className="float-left w-[120px] md:w-[220px] mr-4 md:mr-6 mb-4 text-center">
-                <div className="relative w-full aspect-[3/4] rounded-[20px] overflow-hidden border border-[#D4AF37] shadow-xl mb-2 group">
+              <div className="float-left w-[130px] md:w-[240px] mr-4 md:mr-6 mb-4 text-center">
+                <div className="relative w-full aspect-[3/4] rounded-[18px] overflow-hidden border border-[#D4AF37]/60 shadow-lg mb-2.5">
                   <img
                     src="https://res.cloudinary.com/dvhbkghjx/image/upload/f_auto,q_auto/1000231743_gbt2xc"
                     alt="Geetha Reddy"
@@ -398,46 +406,57 @@ export default function HomePage() {
                     loading="lazy"
                   />
                 </div>
-                <p className="text-[#D4AF37] italic font-serif text-[10px] md:text-xs leading-relaxed max-w-[120px] md:max-w-none mx-auto pt-1">
+                <p className="text-[#D4AF37] italic font-serif text-[10px] md:text-xs leading-relaxed max-w-[130px] md:max-w-none mx-auto pt-1 px-1">
                   "Every saree is chosen with love, because every woman deserves the best."
                 </p>
+                {/* Small decorative divider below the quote */}
+                <div className="w-8 h-[1px] bg-[#D4AF37]/45 mx-auto mt-2.5 mb-1" />
               </div>
 
               {/* Main Narrative Text */}
-              <div className="text-cream font-serif text-sm md:text-base leading-relaxed tracking-wide text-justify md:text-left">
-                <h2 className="font-serif text-base md:text-2xl text-cream font-bold tracking-wide leading-tight mb-3">
-                  THE HEART BEHIND CHARITHRA SILKS
-                </h2>
+              <div className="text-[#FFF8F0] font-serif text-[15px] md:text-[16px] leading-[1.75] tracking-wide text-left">
+                {/* Heading inside main text to wrap next to image */}
+                <div className="border-t border-b border-[#D4AF37]/25 py-2.5 mb-4">
+                  <span className="text-[10px] tracking-[0.25em] text-[#D4AF37] font-semibold uppercase block">
+                    THE HEART BEHIND
+                  </span>
+                  <h2 className="font-serif text-lg md:text-2xl text-[#D4AF37] font-bold tracking-wide mt-0.5">
+                    CHARITHRA SILKS
+                  </h2>
+                </div>
                 
-                <p className="mb-3">
+                <p className="mb-4">
                   Our journey began with a simple vision—to bring timeless Indian elegance closer to every woman.
                 </p>
-                <p className="mb-3">
+                <p className="mb-4">
                   Every saree in our collection is carefully selected with love, focusing on authenticity, craftsmanship, premium quality, and graceful designs.
                 </p>
-                <p className="mb-3">
+                <p className="mb-4">
                   From traditional Banarasi silks to modern festive collections, every product reflects heritage while embracing contemporary elegance.
                 </p>
-                <p className="mb-3">
+                <p className="mb-4">
                   We believe a saree is more than clothing—it's a symbol of tradition, confidence, celebration, and cherished memories.
                 </p>
-                <p className="mb-4">
+                <p className="mb-6">
                   Our mission is to make premium sarees accessible while preserving the rich legacy of Indian craftsmanship.
                 </p>
 
                 {/* Signature Area */}
-                <div className="pt-2 clear-none">
+                <div className="pt-2 clear-none space-y-1">
                   <p className="text-xs text-cream/70">❤️ With Love,</p>
-                  <p className="font-serif text-base md:text-lg text-[#D4AF37] italic mt-0.5 font-bold">
+                  <p 
+                    className="text-lg md:text-xl text-[#D4AF37] italic font-bold tracking-wide mt-0.5"
+                    style={{ fontFamily: "'Dancing Script', 'Brush Script MT', 'Great Vibes', cursive" }}
+                  >
                     Geetha Reddy
                   </p>
-                  <p className="text-[10px] md:text-xs text-[#F5E6C8]">Founder & Curator</p>
+                  <p className="text-[11px] md:text-xs text-[#F5E6C8]">Founder & Curator</p>
                 </div>
               </div>
             </div>
 
             {/* Bottom Quote with divider */}
-            <div className="mt-8 pt-6 border-t border-[rgba(212,175,55,0.15)] text-center max-w-xl mx-auto space-y-2">
+            <div className="mt-8 pt-6 border-t border-[#D4AF37]/15 text-center max-w-xl mx-auto space-y-2">
               <p className="text-cream/80 text-xs md:text-sm italic font-serif leading-relaxed">
                 "A saree is not just what you wear, it's how you carry tradition, beauty and confidence."
               </p>
