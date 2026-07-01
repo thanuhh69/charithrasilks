@@ -1,9 +1,14 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+
 export default function WhatsappButton() {
+  const pathname = usePathname();
   const number = '8332944064';
   const message = encodeURIComponent('Hello Charithra Silks, I would like to know more about your saree collections.');
   const url = `https://wa.me/91${number}?text=${message}`;
+
+  if (pathname !== '/') return null;
 
   return (
     <a
