@@ -356,11 +356,11 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
               {/* Left Side: Portrait Image & Quote */}
               <div className="md:col-span-5 flex flex-col items-center text-center space-y-4">
-                <div className="relative w-full max-w-[280px] aspect-[3/4] rounded-[20px] overflow-hidden border border-[#D4AF37] shadow-xl group">
+                <div className="relative w-full max-w-[280px] aspect-[3/4] rounded-[20px] overflow-hidden border border-[#D4AF37] shadow-xl">
                   <img
                     src="https://res.cloudinary.com/dvhbkghjx/image/upload/f_auto,q_auto/1000231743_gbt2xc"
                     alt="Founder & Curator"
-                    className="w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-105"
+                    className="w-full h-full object-cover founder-image"
                     loading="lazy"
                   />
                 </div>
