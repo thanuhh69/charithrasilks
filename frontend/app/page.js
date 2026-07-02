@@ -358,9 +358,10 @@ export default function HomePage() {
               <div className="md:col-span-5 flex flex-col items-center text-center space-y-4">
                 <div className="relative w-full max-w-[280px] aspect-[3/4] rounded-[20px] overflow-hidden border border-[#D4AF37] shadow-xl">
                   <img
-                    src="https://res.cloudinary.com/dvhbkghjx/image/upload/f_auto,q_auto/1000231743_gbt2xc"
+                    src="https://res.cloudinary.com/dvhbkghjx/image/upload/f_auto,q_auto/1000232932_hglucj"
                     alt="Founder & Curator"
-                    className="w-full h-full object-cover founder-image"
+                    className="w-full h-full object-cover founder-image select-none pointer-events-none"
+                    draggable="false"
                     loading="lazy"
                   />
                 </div>
